@@ -8,20 +8,21 @@ contract Pack{
         uint postID;   
         address postAuthor; 
         uint postPrice;
-    //  uint postCreationTime;
+        uint postCreationTime;  // this is in Epoch time, number of seconds from 1 jannuary 1970
+        string postDescrpition;
     // delivertime
     }
 
-
-//    Post[] public userPostArray;
-    uint public currentPostID=0;
+    uint public currentPostID;
     mapping (address => Post[]) public postMap;
 
 
-    function createPost(uint _postPrice) public{  
-        Post memory newPost = Post({postID: currentPostID, postAuthor: msg.sender, postPrice: _postPrice});
+    function createPost(uint _postPrice, string memory _postDescrpition) public{  
+        Post memory newPost = Post({postID: currentPostID, postAuthor: msg.sender, postPrice: _postPrice,   postCreationTime: block.timestamp, postDescrpition: _postDescrpition});
     postMap[msg.sender].push(newPost);
+        currentPostID = currentPostID +1;   
     }
+
 
     function getUserPosts() view public returns (Post[] memory ){
         // get the list of post created by the msg.sender
@@ -29,12 +30,36 @@ contract Pack{
     }
 
 
-    function remeovePost(uint _postID) public{
-
+    function deletePost(uint _postID) public{
         if (_postID >= (postMap[msg.sender]).length) return;
-       postMap[msg.sender][_postID]= postMap[msg.sender][(postMap[msg.sender]).length-1];   // move the post with _postID in last position
-    postMap[msg.sender].pop();  //remove the last element of the post of msg.sender (the one selected by _postID and moved in last position
-}
+       else{
+        // check if the id in iput exist, may not exist because the most can be deleted            
+            for (uint i = _postID; i< (postMap[msg.sender]).length-1; i++){
+                if (_postID==postMap[msg.sender][i].postID){
+                    postMap[msg.sender][i]= postMap[msg.sender][i+1];   
+                    postMap[msg.sender].pop(); 
+                }
+                else{
+                    return;                
+                }
+            }
+        }
+    }
+
+    function changePrice(uint _postID, uint newPostPrice) public{
+        if (_postID >= (postMap[msg.sender]).length) return;
+        else{
+        // check if the id in iput exist, may not exist because the most can be deleted            
+            for (uint i; i< (postMap[msg.sender]).length; i++){
+                if (_postID==postMap[msg.sender][i].postID){
+                    postMap[msg.sender][i].postPrice=newPostPrice;
+                }
+                else{
+                    return;                
+                }
+            }
+        }
+    }
 
 
 } 
