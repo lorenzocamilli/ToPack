@@ -33,8 +33,7 @@ contract Pack{
 
 
     function deletePost(uint _postID) public{
-        if (_postID >= (postMap[msg.sender]).length) return;
-       else{
+
            if ((postMap[msg.sender]).length==1){
                postMap[msg.sender].pop();
            }
@@ -48,8 +47,8 @@ contract Pack{
                     else{
                         return;                
                     }
-            }
-            }
+                }
+            
         }
     }
 
