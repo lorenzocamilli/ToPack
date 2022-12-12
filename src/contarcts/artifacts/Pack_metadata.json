@@ -37,19 +37,6 @@
 				"type": "function"
 			},
 			{
-				"inputs": [],
-				"name": "currentPostID",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
 				"inputs": [
 					{
 						"internalType": "uint256",
@@ -101,6 +88,43 @@
 				],
 				"stateMutability": "view",
 				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "receiver",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "transfer",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"name": "usersBalnce",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
 			}
 		],
 		"devdoc": {
@@ -131,11 +155,11 @@
 	},
 	"sources": {
 		"2Pack/src/contarcts/2Pack.sol": {
-			"keccak256": "0x2901137de33b4bd9aeb3ae3f4a173882669d0852f3efec737df85e7cbbb4afab",
+			"keccak256": "0x82566508500abc796d5b3070bac8a8d06f6dbc2b22b752355b74503b137d0019",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://581da684b7d47a25bfe825601f193a9cf67dd3a9a81e31fe487a3c3b44483efb",
-				"dweb:/ipfs/QmbJeaeqhMxETWrWSFEvJiEV4U1mfFNSndnub4esQSFJi6"
+				"bzz-raw://7a98f0601b60019ce1c489a06919e22b7a3bf3236fd1f981b68de1a2f75b4908",
+				"dweb:/ipfs/QmeRMoa18CjnqSCDyt3EqYiNJB7BveoVLxLryPzKfJkz1x"
 			]
 		}
 	},
