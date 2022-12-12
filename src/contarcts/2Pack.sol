@@ -53,23 +53,20 @@ contract Pack{
         }
     }
 
-    function changePrice(uint _postID, uint newPostPrice) public{
-        if (_postID >= (postMap[msg.sender]).length) return;
-        else{
-        // check if the id in iput exist, may not exist because the most can be deleted            
-            for (uint i; i< (postMap[msg.sender]).length; i++){
-                if (_postID==postMap[msg.sender][i].postID){
-                    postMap[msg.sender][i].postPrice=newPostPrice;
-                }
-                else{
-                    return;                
-                }
+    function changePrice(uint _postID, uint newPostPrice) public{  
+    // check if the id in iput exist, may not exist because the most can be deleted            
+        for (uint i; i< (postMap[msg.sender]).length; i++){
+            if (_postID==postMap[msg.sender][i].postID){
+                postMap[msg.sender][i].postPrice=newPostPrice;
+            }
+            else{
+                return;                
             }
         }
     }
+}
 
 
-} 
 
 
 
