@@ -9,7 +9,7 @@ contract Pack{
         address postAuthor; 
         uint postPrice;
         uint postCreationTime;  // this is in Epoch time, number of seconds from 1 jannuary 1970
-    // delivertime
+        uint deliverTime;       // this have to been taken by the frontend
     }
 
     uint public currentPostID;
@@ -18,7 +18,7 @@ contract Pack{
 
     function createPost(uint _postPrice) public{  
         Post memory newPost = Post({postID: currentPostID, postAuthor: msg.sender,
-        postPrice: _postPrice,   postCreationTime: block.timestamp});
+        postPrice: _postPrice,   postCreationTime: block.timestamp, deliverTime: 0 });
         postMap[msg.sender].push(newPost);
         currentPostID = currentPostID +1;   
     }
@@ -41,16 +41,11 @@ contract Pack{
     }      
 
     function changePrice(uint _postID, uint newPostPrice) public{
-        if (_postID >= (postMap[msg.sender]).length) return;
-        else{
         // check if the id in iput exist, may not exist because the most can be deleted            
-            for (uint i; i< (postMap[msg.sender]).length; i++){
-                if (_postID==postMap[msg.sender][i].postID){
-                    postMap[msg.sender][i].postPrice=newPostPrice;
-                }
-                else{
-                    return;                
-                }
+        for (uint i = 0; i< (postMap[msg.sender]).length; i++){
+            if (_postID==postMap[msg.sender][i].postID){
+                postMap[msg.sender][i].postPrice=newPostPrice;
+                break;
             }
         }
     }
