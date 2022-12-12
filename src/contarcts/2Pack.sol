@@ -9,17 +9,17 @@ contract Pack{
         address postAuthor; 
         uint postPrice;
         uint postCreationTime;  // this is in Epoch time, number of seconds from 1 jannuary 1970
-        string postDescrpition;
     // delivertime
     }
 
     uint public currentPostID;
-    mapping (address => Post[]) public postMap;
+    mapping (address => Post[])  postMap;
 
 
-    function createPost(uint _postPrice, string memory _postDescrpition) public{  
-        Post memory newPost = Post({postID: currentPostID, postAuthor: msg.sender, postPrice: _postPrice,   postCreationTime: block.timestamp, postDescrpition: _postDescrpition});
-    postMap[msg.sender].push(newPost);
+    function createPost(uint _postPrice) public{  
+        Post memory newPost = Post({postID: currentPostID, postAuthor: msg.sender,
+        postPrice: _postPrice,   postCreationTime: block.timestamp});
+        postMap[msg.sender].push(newPost);
         currentPostID = currentPostID +1;   
     }
 

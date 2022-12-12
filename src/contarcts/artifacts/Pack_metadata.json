@@ -29,11 +29,6 @@
 						"internalType": "uint256",
 						"name": "_postPrice",
 						"type": "uint256"
-					},
-					{
-						"internalType": "string",
-						"name": "_postDescrpition",
-						"type": "string"
 					}
 				],
 				"name": "createPost",
@@ -92,60 +87,11 @@
 								"internalType": "uint256",
 								"name": "postCreationTime",
 								"type": "uint256"
-							},
-							{
-								"internalType": "string",
-								"name": "postDescrpition",
-								"type": "string"
 							}
 						],
 						"internalType": "struct Pack.Post[]",
 						"name": "",
 						"type": "tuple[]"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "address",
-						"name": "",
-						"type": "address"
-					},
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"name": "postMap",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "postID",
-						"type": "uint256"
-					},
-					{
-						"internalType": "address",
-						"name": "postAuthor",
-						"type": "address"
-					},
-					{
-						"internalType": "uint256",
-						"name": "postPrice",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "postCreationTime",
-						"type": "uint256"
-					},
-					{
-						"internalType": "string",
-						"name": "postDescrpition",
-						"type": "string"
 					}
 				],
 				"stateMutability": "view",
@@ -180,11 +126,11 @@
 	},
 	"sources": {
 		"2Pack/src/contarcts/2Pack.sol": {
-			"keccak256": "0x945ace3065ee6833677c93331867464d005c2f0f66bf8ec81a50833deac0b615",
+			"keccak256": "0xb4f622d5445c4630f7e683b106e357691286183d578d58e05041c2bdb34f62aa",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://02ca929c753a8565db4078765f12a86dd695728cbd60fa9c9874eacd8f116074",
-				"dweb:/ipfs/QmfGKpqrAYT1wsmTX8wXaBj8FUnCFMN3jtAdYKnuR4Sd34"
+				"bzz-raw://265dfa069f97cb11307e112f90c077ebc0ef79faef3b347e296b88aa975c53ec",
+				"dweb:/ipfs/QmZ8bTm53RpmsG5zoPWuh1973XtHE8RCmFg8SWYCYCwEev"
 			]
 		}
 	},
