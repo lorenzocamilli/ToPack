@@ -16,8 +16,6 @@ contract Pack{
     mapping (address => Post[])  postMap;
 
 
-
-
     function createPost(uint _postPrice) public{  
         Post memory newPost = Post({postID: currentPostID, postAuthor: msg.sender,
         postPrice: _postPrice,   postCreationTime: block.timestamp});
@@ -33,39 +31,32 @@ contract Pack{
 
 
     function deletePost(uint _postID) public{
-
-           if ((postMap[msg.sender]).length==1){
-               postMap[msg.sender].pop();
-           }
-            else{
-            // check if the id in iput exist, may not exist because the most can be deleted            
-                for (uint i = _postID; i< (postMap[msg.sender]).length-1; i++){
-                    if (_postID==postMap[msg.sender][i].postID){
-                        postMap[msg.sender][i]= postMap[msg.sender][i+1];   
-                        postMap[msg.sender].pop(); 
-                    }
-                    else{
-                        return;                
-                    }
-                }
-            
-        }
-    }
-
-    function changePrice(uint _postID, uint newPostPrice) public{  
-    // check if the id in iput exist, may not exist because the most can be deleted            
-        for (uint i; i< (postMap[msg.sender]).length; i++){
+        for (uint i = 0; i< (postMap[msg.sender]).length; i++){
             if (_postID==postMap[msg.sender][i].postID){
-                postMap[msg.sender][i].postPrice=newPostPrice;
+                postMap[msg.sender][i]=postMap[msg.sender][(postMap[msg.sender]).length-1];
+                postMap[msg.sender].pop(); 
+                break;
             }
-            else{
-                return;                
+        }  
+    }      
+
+    function changePrice(uint _postID, uint newPostPrice) public{
+        if (_postID >= (postMap[msg.sender]).length) return;
+        else{
+        // check if the id in iput exist, may not exist because the most can be deleted            
+            for (uint i; i< (postMap[msg.sender]).length; i++){
+                if (_postID==postMap[msg.sender][i].postID){
+                    postMap[msg.sender][i].postPrice=newPostPrice;
+                }
+                else{
+                    return;                
+                }
             }
         }
     }
-}
 
 
+} 
 
 
 
