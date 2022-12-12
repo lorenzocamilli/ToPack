@@ -111,7 +111,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"2Pack/src/contarcts/2Pack.sol": "Pack"
+			"src/contarcts/2Pack.sol": "Pack"
 		},
 		"evmVersion": "london",
 		"libraries": {},
@@ -125,12 +125,12 @@
 		"remappings": []
 	},
 	"sources": {
-		"2Pack/src/contarcts/2Pack.sol": {
-			"keccak256": "0xb4f622d5445c4630f7e683b106e357691286183d578d58e05041c2bdb34f62aa",
+		"src/contarcts/2Pack.sol": {
+			"keccak256": "0x3f27462dc766c01bb77300ef9e18c029a75cd75fe0410402b4fbf60a146d574c",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://265dfa069f97cb11307e112f90c077ebc0ef79faef3b347e296b88aa975c53ec",
-				"dweb:/ipfs/QmZ8bTm53RpmsG5zoPWuh1973XtHE8RCmFg8SWYCYCwEev"
+				"bzz-raw://3ef328d641c1257bccf587e8862925fc489ce1886705f0a0d61e97fb8e95048d",
+				"dweb:/ipfs/QmSHnmr1HEXXRE4m8x5oPjfCwR4NPno3rSC28zkZY9sXTX"
 			]
 		}
 	},

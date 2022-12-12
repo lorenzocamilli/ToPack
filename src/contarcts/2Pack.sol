@@ -16,6 +16,8 @@ contract Pack{
     mapping (address => Post[])  postMap;
 
 
+
+
     function createPost(uint _postPrice) public{  
         Post memory newPost = Post({postID: currentPostID, postAuthor: msg.sender,
         postPrice: _postPrice,   postCreationTime: block.timestamp});
@@ -33,15 +35,20 @@ contract Pack{
     function deletePost(uint _postID) public{
         if (_postID >= (postMap[msg.sender]).length) return;
        else{
-        // check if the id in iput exist, may not exist because the most can be deleted            
-            for (uint i = _postID; i< (postMap[msg.sender]).length-1; i++){
-                if (_postID==postMap[msg.sender][i].postID){
-                    postMap[msg.sender][i]= postMap[msg.sender][i+1];   
-                    postMap[msg.sender].pop(); 
-                }
-                else{
-                    return;                
-                }
+           if ((postMap[msg.sender]).length==1){
+               postMap[msg.sender].pop();
+           }
+            else{
+            // check if the id in iput exist, may not exist because the most can be deleted            
+                for (uint i = _postID; i< (postMap[msg.sender]).length-1; i++){
+                    if (_postID==postMap[msg.sender][i].postID){
+                        postMap[msg.sender][i]= postMap[msg.sender][i+1];   
+                        postMap[msg.sender].pop(); 
+                    }
+                    else{
+                        return;                
+                    }
+            }
             }
         }
     }
