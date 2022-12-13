@@ -16,6 +16,12 @@ contract Pack{
     mapping (address => Post[])  postMap;   // map of psot of all users
 	mapping (address => uint) public usersBalnce; // map of balances of users
 
+
+    constructor()  {
+        usersBalnce[msg.sender]=address(msg.sender).balance;
+    }
+
+
     function createPost(uint _postPrice) public{  
         // this function create a new post, insert the post in the array of 
         // posts of the sender 
