@@ -8,8 +8,9 @@ contract Pack{
         uint postID;   
         address postAuthor; 
         uint postPrice;
-        uint postCreationTime;  // this is in Epoch time, number of seconds from 1 jannuary 1970
-        uint deliverTime;       // this have to been taken by the frontend, for the moment is 0
+        // time are in Epoch time (number of seconds from 1 jannuary 1970)
+        uint postCreationTime;  
+        uint deliverTime;       // this have to been taken from the frontend, for the moment it's setted to 0
     }
 
     uint currentPostID;  
@@ -23,8 +24,7 @@ contract Pack{
 
 
     function createPost(uint _postPrice) public{  
-        // this function create a new post, insert the post in the array of 
-        // posts of the sender 
+        // create a new post, insert the post in the array of posts of the sender 
         
         Post memory newPost = Post({postID: currentPostID, postAuthor: msg.sender,
         postPrice: _postPrice, postCreationTime: block.timestamp, deliverTime: 0 });
@@ -41,6 +41,7 @@ contract Pack{
 
     function getUserPosts() view public returns (Post[] memory ){
         // get the list of posts created by the msg.sender
+
         return  postMap[msg.sender];
     }
 
@@ -58,8 +59,10 @@ contract Pack{
         }  
     }      
 
+
     function changePrice(uint _postID, uint newPostPrice) public{
-        // change teh price of the selected with the postID) post
+        // change the price of the selected (with the postID) post
+
         for (uint i = 0; i< (postMap[msg.sender]).length; i++){
             if (_postID==postMap[msg.sender][i].postID){
                 postMap[msg.sender][i].postPrice=newPostPrice;
@@ -68,8 +71,23 @@ contract Pack{
         }
     }
 
+
+    function changeDeliveryTime(uint _postID, uint newDeliveryTime) public{
+        // change the date and time of the selected (with the postID) post
+        // NOTE: the date is in Epoch time form, it's must be taken from the frontend
+
+        for (uint i = 0; i< (postMap[msg.sender]).length; i++){
+            if (_postID==postMap[msg.sender][i].postID){
+                postMap[msg.sender][i].deliverTime=newDeliveryTime;
+                break;
+            }
+        }
+    }
+
+
     function transfer(address receiver, uint amount) public payable{
-        // not completed yet
+        // used to transfer an amount of money to a specific address
+
         require(usersBalnce[msg.sender] >=amount);           
         require(usersBalnce[receiver] +amount >= usersBalnce[receiver]);
         usersBalnce[msg.sender] -=amount;                    

@@ -19,6 +19,24 @@
 					},
 					{
 						"internalType": "uint256",
+						"name": "newDeliveryTime",
+						"type": "uint256"
+					}
+				],
+				"name": "changeDeliveryTime",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_postID",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
 						"name": "newPostPrice",
 						"type": "uint256"
 					}
@@ -160,11 +178,11 @@
 	},
 	"sources": {
 		"src/contarcts/2Pack.sol": {
-			"keccak256": "0x63bf0d9345d149d5135051b743f52b989a81a455387afc3be5f6dde9da16748f",
+			"keccak256": "0xca9a221e03dc86ffab9dc3ab72db0abe883aecb38ea1443d74fb1329b9c39e88",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://92f2910f08d634ad76cbc26fd2917d098333ca51f11051acb5d63cf882363c98",
-				"dweb:/ipfs/QmcaiTxf3KVhRRzpdZdsPhkWRMBndwPifuwgUbh4wPFdkB"
+				"bzz-raw://39be416224d38b21d8007b58ffb4c04e318864764f88df41c4ad1456ba429de2",
+				"dweb:/ipfs/QmXUwGK1dCgbp4mH6Tn7cC89wJB7fCSgKCrwY7wE9q1cdy"
 			]
 		}
 	},
