@@ -34,6 +34,7 @@ contract Pack{
 
         if (_postPrice  <= usersBalnce[msg.sender]){
             // check if the sender have enough money
+            // move the money to the contract
             transfer(address(this), _postPrice); // address(this) address of the contract
         }
     }
@@ -49,28 +50,22 @@ contract Pack{
     function deletePost(uint _postID) public{
         // delete a post of the user, the post is selected by the postID
         
-        for (uint i = 0; i< (postMap[msg.sender]).length; i++){
-            if (_postID==postMap[msg.sender][i].postID){
-                // move the post to delete as last position of the array abd then poop it
-                postMap[msg.sender][i]=postMap[msg.sender][(postMap[msg.sender]).length-1]; 
-                postMap[msg.sender].pop(); 
-                break;
-            }
-        }  
-    }      
-
-
-    function changePrice(uint _postID, uint newPostPrice) public{
-        // change the price of the selected (with the postID) post
-
-        for (uint i = 0; i< (postMap[msg.sender]).length; i++){
-            if (_postID==postMap[msg.sender][i].postID){
-                postMap[msg.sender][i].postPrice=newPostPrice;
-                break;
-            }
+        if ((postMap[msg.sender]).length!=1){   
+            for (uint i = 0; i< (postMap[msg.sender]).length; i++){
+                if (_postID==postMap[msg.sender][i].postID){
+                    // move the post to delete as last position of the array abd then poop it
+                    postMap[msg.sender][i]=postMap[msg.sender][(postMap[msg.sender]).length-1]; 
+                    postMap[msg.sender].pop();
+                    //gives back the money used to "create" the post to the sender (creator)
+                    transfer(msg.sender, postMap[msg.sender][i].postPrice); 
+                    break;
+                }
+            }  
+        } else{
+            postMap[msg.sender].pop(); 
+            transfer(msg.sender, postMap[msg.sender][0].postPrice); 
         }
-    }
-
+    }      
 
     function changeDeliveryTime(uint _postID, uint newDeliveryTime) public{
         // change the date and time of the selected (with the postID) post

@@ -32,24 +32,6 @@
 				"inputs": [
 					{
 						"internalType": "uint256",
-						"name": "_postID",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "newPostPrice",
-						"type": "uint256"
-					}
-				],
-				"name": "changePrice",
-				"outputs": [],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "uint256",
 						"name": "_postPrice",
 						"type": "uint256"
 					}
@@ -163,7 +145,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"src/contarcts/2Pack.sol": "Pack"
+			"ToPack/src/contarcts/Pack.sol": "Pack"
 		},
 		"evmVersion": "london",
 		"libraries": {},
@@ -177,12 +159,12 @@
 		"remappings": []
 	},
 	"sources": {
-		"src/contarcts/2Pack.sol": {
-			"keccak256": "0xca9a221e03dc86ffab9dc3ab72db0abe883aecb38ea1443d74fb1329b9c39e88",
+		"ToPack/src/contarcts/Pack.sol": {
+			"keccak256": "0x78c1f41059a50cfa07b2c32a6dee5fbd851414a8ada2e40a5dd75642323fbe43",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://39be416224d38b21d8007b58ffb4c04e318864764f88df41c4ad1456ba429de2",
-				"dweb:/ipfs/QmXUwGK1dCgbp4mH6Tn7cC89wJB7fCSgKCrwY7wE9q1cdy"
+				"bzz-raw://e97a6cc4acef3b0785740536c4743e22adba0588253757e4df0c88fa37b7b144",
+				"dweb:/ipfs/QmU1ZJP6o6wqyqEBdaM1am2Vfe2frGuen1wgqDXu9PQNzt"
 			]
 		}
 	},
