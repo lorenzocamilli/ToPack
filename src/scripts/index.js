@@ -136,7 +136,13 @@ const abi = [
 ]
 
 const contractAddress = '0x3681C41F7F698C28FfB5351a85b2Fc0c52057Db4'
+const  userAddress = '0xd4dAf7F9841DFd496cb90A54fa198cb1873f0126'
 const contract = new web3.eth.Contract(abi, contractAddress)
-//contract.methods.createPost(1200).send((err, result) => { console.log(result) })
-//contract.methods.balanceOf('0xd26114cd6EE289AccF82350c8d8487fedB8A0C07').call((err, result) => { console.log(result) })
+
+const postID = 0
+const newDeliveryTime = 10
+
+contract.methods.createPost(111111111).send({from: userAddress, gasLimit:300000 });
 contract.methods.getUserPosts().call((err, result) => { console.log(result) })
+contract.methods.deletePost(postID).send({from: userAddress, gasLimit:300000 });
+contract.methods.changeDeliveryTime(postID, newDeliveryTime).send({from: userAddress, gasLimit:300000 });
