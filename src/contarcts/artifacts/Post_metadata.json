@@ -1,0 +1,138 @@
+{
+	"compiler": {
+		"version": "0.8.7+commit.e28d00a7"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_postID",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "newPostPrice",
+						"type": "uint256"
+					}
+				],
+				"name": "changePrice",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_postPrice",
+						"type": "uint256"
+					}
+				],
+				"name": "createPost",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "currentPostID",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_postID",
+						"type": "uint256"
+					}
+				],
+				"name": "deletePost",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getUserPosts",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "uint256",
+								"name": "postID",
+								"type": "uint256"
+							},
+							{
+								"internalType": "address",
+								"name": "postAuthor",
+								"type": "address"
+							},
+							{
+								"internalType": "uint256",
+								"name": "postPrice",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "postCreationTime",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct Post.Post[]",
+						"name": "",
+						"type": "tuple[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"src/contarcts/2Pack.sol": "Post"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"src/contarcts/2Pack.sol": {
+			"keccak256": "0xde8360f84852c66d95eade28b3f75ec5ea4dedf04864ee5b011d9d97525fbba0",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://cb413c6f565c5f0664a70cbd89fa37d0359f779a4307156f44c2705d9b2333d5",
+				"dweb:/ipfs/QmXnkN7657Dj7j8zS93abC3tf74w1qaBzoz8garCuTH7Fu"
+			]
+		}
+	},
+	"version": 1
+}
