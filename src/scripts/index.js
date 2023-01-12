@@ -1,11 +1,13 @@
 const Web3 = require('web3')
-web3 = new Web3("http://127.0.0.1:7545")
+web3 = new Web3("http://127.0.0.1:7545")   // connect to ganache
 try {
   const listening =  web3.eth.net.isListening()
   console.log(listening)
 } catch (error) {
   console.log(error)
 }
+
+// abi the of the contract change this at any cheange in the backend (contracts) part
 const abi = [
 	{
 		"inputs": [
@@ -135,14 +137,17 @@ const abi = [
 	}
 ]
 
-const contractAddress = '0x3681C41F7F698C28FfB5351a85b2Fc0c52057Db4'
-const  userAddress = '0xd4dAf7F9841DFd496cb90A54fa198cb1873f0126'
+// address of the contract 
+const contractAddress = '0xe68D54263F7eBd8A59F2896e5a8C0e40948ECC83'	// CHANGE THIS
+// address of the user 
+const  userAddress = '0x3bC93bd5e2E9c07aACE7f281b6f149D6A03a0f2b'	// CHANGE THIS
+
 const contract = new web3.eth.Contract(abi, contractAddress)
 
-const postID = 0
-const newDeliveryTime = 10
+const postID = 0	// placeholder of the post, necessary only to call the changeDeliveryTime and deletePost methods
+const newDeliveryTime = 10 // placeholder of the post, necessary only to call the deletePost method
 
 contract.methods.createPost(111111111).send({from: userAddress, gasLimit:300000 });
 contract.methods.getUserPosts().call((err, result) => { console.log(result) })
-contract.methods.deletePost(postID).send({from: userAddress, gasLimit:300000 });
-contract.methods.changeDeliveryTime(postID, newDeliveryTime).send({from: userAddress, gasLimit:300000 });
+//contract.methods.deletePost(postID).send({from: userAddress, gasLimit:300000 });
+//contract.methods.changeDeliveryTime(postID, newDeliveryTime).send({from: userAddress, gasLimit:300000 });
