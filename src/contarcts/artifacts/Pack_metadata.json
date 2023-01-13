@@ -11,17 +11,15 @@
 				"type": "constructor"
 			},
 			{
-				"anonymous": false,
 				"inputs": [
 					{
-						"indexed": false,
 						"internalType": "string",
 						"name": "message",
 						"type": "string"
 					}
 				],
 				"name": "Message",
-				"type": "event"
+				"type": "error"
 			},
 			{
 				"inputs": [
@@ -173,11 +171,11 @@
 	},
 	"sources": {
 		"ToPack/src/contarcts/Pack.sol": {
-			"keccak256": "0x513f9035e6ad157a6d958c75b3d461dc18a65c662aae4d03585652db562b97f4",
+			"keccak256": "0x3dc16338cf308c8d975b7e3937df316328a133b10ff95152bd6de02f7b4a909b",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://4b77f0b1bc2ec9e7cb889e9422c458a1f2c9bc25d5325d8c4958d03188c39406",
-				"dweb:/ipfs/QmaWAM6CK2rAohsdaZbLBqd3ejJJAz4VNPm3PqoNuLkbSq"
+				"bzz-raw://8f1164836d393bf7583ec5eedad4f7847cf92478c49f4ae35821e4bc2d6cf45d",
+				"dweb:/ipfs/QmU9yNh8Hi8aBriSHWXitnLVCZmuq3pzjRW2d5hBPaSud3"
 			]
 		}
 	},

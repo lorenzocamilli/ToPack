@@ -10,11 +10,11 @@ async function web3Contract() {
     const Pack = await new web3.eth.Contract(abi, contractAddress);
     const accounts = await web3.eth.getAccounts();
 
-	const postID = 0	// placeholder of the post, necessary only to call the changeDeliveryTime and deletePost methods
+	const postID = 15	// placeholder of the post, necessary only to call the changeDeliveryTime and deletePost methods
 	const newDeliveryTime = 10 // placeholder of the post, necessary only to call the deletePost method
-	Pack.methods.getUserPosts().call((err, result) => { console.log(result) })	//Pack.methods.createPost(111111111).send({from: userAddress, gasLimit:300000 });
-	//Pack.methods.createPost(111111111).send({from: userAddress, gasLimit:300000 });
-	//Pack.methods.deletePost(postID).send({from: userAddress, gasLimit:300000 });
+//	 	Pack.methods.getUserPosts().call((err, result) => { console.log(result) })	//Pack.methods.createPost(111111111).send({from: userAddress, gasLimit:300000 });
+//	Pack.methods.createPost(111111111).send({from: userAddress, gasLimit:300000 });
+	Pack.methods.deletePost(postID).send({from: userAddress, gasLimit:300000 });
 	//Pack.methods.changeDeliveryTime(postID, newDeliveryTime).send({from: userAddress, gasLimit:300000 });
 }
 

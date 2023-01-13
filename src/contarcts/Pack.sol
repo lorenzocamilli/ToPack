@@ -22,10 +22,7 @@ contract Pack{
         usersBalnce[msg.sender]=address(msg.sender).balance;
     }
 
-
-    event Message(string message); // potentially ths can be done using FE to avoid to
-    // store strings in blockchain, for example using a boolean and print the message with FE
-
+    error Message(string message); 
 
     function createPost(uint _postPrice) public{  
         // create a new post, insert the post in the array of posts of the sender 
@@ -53,7 +50,6 @@ contract Pack{
 
     function deletePost(uint _postID) public payable {
         // delete a post of the user, the post is selected by the postID 
-
         // if _postID is the ID of the last post in the array 
         if(_postID==(postMap[msg.sender][(postMap[msg.sender]).length-1].postID)) {
                 transfer(msg.sender, postMap[msg.sender][(postMap[msg.sender]).length-1].postPrice); 
@@ -81,7 +77,7 @@ contract Pack{
         else{
             // the user hve to receive back the gas used to call this function
             // transfer(msg.sender,usedGas );  
-            emit Message("You can delete this post");
+            revert Message( "Value must be greater than 0");
         }
     }      
 
@@ -93,7 +89,6 @@ contract Pack{
         for (uint i = 0; i< (postMap[msg.sender]).length; i++){
             if (_postID==postMap[msg.sender][i].postID){
                 postMap[msg.sender][i].deliverTime=newDeliveryTime;
-                emit Message("You can delete this post");
                 break;
             }
         }
