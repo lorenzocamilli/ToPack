@@ -23,6 +23,10 @@ contract Pack{
     }
 
 
+    event Message(string message); // potentially ths can be done using FE to avoid to
+    // store strings in blockchain, for example using a boolean and print the message with FE
+
+
     function createPost(uint _postPrice) public{  
         // create a new post, insert the post in the array of posts of the sender 
         
@@ -33,8 +37,8 @@ contract Pack{
         currentPostID = currentPostID +1;   
 
         if (_postPrice  <= usersBalnce[msg.sender]){
-            // check if the sender have enough money
-            // move the money to the contract
+            // check if the sender have enough money included the gas
+            // transfer the money to the contract
             transfer(address(this), _postPrice); // address(this) address of the contract
         }
     }
@@ -47,25 +51,40 @@ contract Pack{
     }
 
 
-    function deletePost(uint _postID) public{
-        // delete a post of the user, the post is selected by the postID
-        
-        if ((postMap[msg.sender]).length!=1){   
+    function deletePost(uint _postID) public payable {
+        // delete a post of the user, the post is selected by the postID 
+
+        // if _postID is the ID of the last post in the array 
+        if(_postID==(postMap[msg.sender][(postMap[msg.sender]).length-1].postID)) {
+                transfer(msg.sender, postMap[msg.sender][(postMap[msg.sender]).length-1].postPrice); 
+                postMap[msg.sender].pop(); 
+        }
+        // if _postID is the ID of the first (and only) post in the array
+        else if ((postMap[msg.sender]).length==1 && _postID==postMap[msg.sender][0].postID){
+                transfer(msg.sender, postMap[msg.sender][0].postPrice); 
+                postMap[msg.sender].pop(); 
+        } 
+
+        else if ((postMap[msg.sender]).length!=1){   
             for (uint i = 0; i< (postMap[msg.sender]).length; i++){
                 if (_postID==postMap[msg.sender][i].postID){
+                    //gives back the money used to "create" the post to the sender (creator)
+                    transfer(msg.sender, postMap[msg.sender][i].postPrice); 
                     // move the post to delete as last position of the array abd then poop it
                     postMap[msg.sender][i]=postMap[msg.sender][(postMap[msg.sender]).length-1]; 
                     postMap[msg.sender].pop();
-                    //gives back the money used to "create" the post to the sender (creator)
-                    transfer(msg.sender, postMap[msg.sender][i].postPrice); 
                     break;
                 }
-            }  
-        } else{
-            postMap[msg.sender].pop(); 
-            transfer(msg.sender, postMap[msg.sender][0].postPrice); 
+            } 
+        }
+        // if the post with ID == _postId doesn't exists
+        else{
+            // the user hve to receive back the gas used to call this function
+            // transfer(msg.sender,usedGas );  
+            emit Message("You can delete this post");
         }
     }      
+
 
     function changeDeliveryTime(uint _postID, uint newDeliveryTime) public{
         // change the date and time of the selected (with the postID) post
@@ -74,6 +93,7 @@ contract Pack{
         for (uint i = 0; i< (postMap[msg.sender]).length; i++){
             if (_postID==postMap[msg.sender][i].postID){
                 postMap[msg.sender][i].deliverTime=newDeliveryTime;
+                emit Message("You can delete this post");
                 break;
             }
         }

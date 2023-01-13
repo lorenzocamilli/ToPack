@@ -11,6 +11,19 @@
 				"type": "constructor"
 			},
 			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "message",
+						"type": "string"
+					}
+				],
+				"name": "Message",
+				"type": "event"
+			},
+			{
 				"inputs": [
 					{
 						"internalType": "uint256",
@@ -51,7 +64,7 @@
 				],
 				"name": "deletePost",
 				"outputs": [],
-				"stateMutability": "nonpayable",
+				"stateMutability": "payable",
 				"type": "function"
 			},
 			{
@@ -160,11 +173,11 @@
 	},
 	"sources": {
 		"ToPack/src/contarcts/Pack.sol": {
-			"keccak256": "0x78c1f41059a50cfa07b2c32a6dee5fbd851414a8ada2e40a5dd75642323fbe43",
+			"keccak256": "0x513f9035e6ad157a6d958c75b3d461dc18a65c662aae4d03585652db562b97f4",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://e97a6cc4acef3b0785740536c4743e22adba0588253757e4df0c88fa37b7b144",
-				"dweb:/ipfs/QmU1ZJP6o6wqyqEBdaM1am2Vfe2frGuen1wgqDXu9PQNzt"
+				"bzz-raw://4b77f0b1bc2ec9e7cb889e9422c458a1f2c9bc25d5325d8c4958d03188c39406",
+				"dweb:/ipfs/QmaWAM6CK2rAohsdaZbLBqd3ejJJAz4VNPm3PqoNuLkbSq"
 			]
 		}
 	},
