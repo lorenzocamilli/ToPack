@@ -4,12 +4,11 @@ const contractAddress = '0xfd48F8c5e1109feb878d353F4E2F25aB72F03776'	// CHANGE T
 //const  userAddress = '0x3bC93bd5e2E9c07aACE7f281b6f149D6A03a0f2b'	// CHANGE THIS
 var senderAddress = '0x0';
 var contract = null;
-var contractJSON = "./Pack.json"
 
 
 async function web3Contract() {
 	const path = require('path');
-	const abi = require(path.join(__dirname, 'Pack.json'));
+	const abi = require(path.join(__dirname, './build/contracts/Pack.json'));
     console.log(abi);
 
     const contract = new web3.eth.Contract(abi, contractAddress);
