@@ -4,7 +4,7 @@ $("form").submit(function(e){e.preventDefault();});
 // Set the contract address
 var contractAddress = '0x110aa4fc7cAA8A031Af36e5bFfcD16d15E81FEb9';
 // Set the relative URI of the contract’s skeleton (with ABI)
-var contractJSON = "build/contracts/BitMathGame.json"
+var contractJSON = "build/contracts/Pack.json"
 // Set the sending address
 var senderAddress = '0x0';
 // Set contract ABI and the contract
