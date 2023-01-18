@@ -1,8 +1,7 @@
 // Prevent forms from submitting and reloading the page
 $("form").submit(function(e){e.preventDefault();});
 
-// Set the contract address
-var contractAddress = '0x110aa4fc7cAA8A031Af36e5bFfcD16d15E81FEb9';
+var contractAddress = '0xa097A54856Ff37467B1c63453882472f3e0Fe3C3';
 // Set the relative URI of the contract’s skeleton (with ABI)
 var contractJSON = "build/contracts/Pack.json"
 // Set the sending address
@@ -61,7 +60,7 @@ async function initialise(contractAddress) {
 
 
 
-function createPost() {
+async function createPost() {
     var cost = $('#costInput').val();
     if (cost < 1) {
       alert("The given guess should be higher than 0");
@@ -76,3 +75,9 @@ function createPost() {
   
     return false;
   }
+
+
+
+async function getUserPosts(){
+  contract.methods.getUserPosts().call((err, result) => { console.log(result) })	
+}
