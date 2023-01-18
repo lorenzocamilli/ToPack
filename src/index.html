@@ -1,45 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
-	<meta charset="utf-8">
-	<head>
-		<title>NewToPack</title>
-	</head>
-	<body>
-			<header><h1>ToPack</h1></header>
-			<section id="defaultSection">
-				<form onsubmit="run(); updateDisplayedInformation(); return false;"
-					id="playform">
-					<fieldset>
-						<legend>Cost</legend>
-						<label for="costInput" />
-						<!-- Notice that "required" imposes a value to be inserted! -->
-						<input type="number" name="cpst" id="costInput"
-								required="required"/>
-							<button type="submit">Check!</button>
-					</fieldset>
-				</form>
-			</section>
-			<footer>
-				<header><h2>Status</h2></header>
-				<p>Your account address is:
-					<code id="myaccountaddress">n</code>.
-					<!-- see the JS function displayAccountAddress() -->
-				</p>
-				<p>Your current balance in BitMathCoins is:
-					<strong id="mybalance">x</strong>.
-				</p>
-				<p>Your current balance in Wei is:
-					<strong id="myweibalance">x</strong>.
-				</p>
-				<p>
-					And the minter is...:
-					<strong id="currentminter">y</strong>!
-				</p>
-			</footer>
-	</body>
-	<script src="dist/js/jquery.min.js"></script>
-	<script src="dist/js/bootstrap.min.js"></script>
-	<script src="dist/js/web3.min.js"></script>
+  <meta charset="utf-8">
+  <head>
+    <title>NewToPack</title>
+  </head>
+  <body>
+      <header><h1>ToPack</h1></header>
+      <section id="defaultSection">
+        <form onsubmit="createPost(); return false;"
+          id="playform">
+          <fieldset>
+            <legend>Cost</legend>
+            <label for="costInput" />
+            <!-- Notice that "required" imposes a value to be inserted! -->
+            <input type="number" name="cost" required="required"/>
+              <button type="submit">Check!</button>
+          </fieldset>
+        </form>
+      </section>
+      <footer>
+        <header><h2>Status</h2></header>
+        <p>Your account address is:
+          <code id="myaccountaddress">n</code>.
+          <!-- see the JS function displayAccountAddress() -->
+        </p>
+        <p>Your current balance in BitMathCoins is:
+          <strong id="mybalance">x</strong>.
+        </p>
+        <p>Your current balance in Wei is:
+          <strong id="myweibalance">x</strong>.
+        </p>
+        <p>
+          And the minter is...:
+          <strong id="currentminter">y</strong>!
+        </p>
+      </footer>
+  </body>
+  <script src="dist/js/jquery.min.js"></script>
+  <script src="dist/js/bootstrap.min.js"></script>
+  <script src="dist/js/web3.min.js"></script>
   <!-- To make our code tidier, we separate the JS script from the HTML file -->
-	<script src="index.js"></script>
+  <script src="index.js"></script>
 </html>
