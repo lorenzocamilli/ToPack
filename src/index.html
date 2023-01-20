@@ -6,9 +6,13 @@
 	</head>
 	<body>
 			<header><h1>ToPack</h1></header>
+
 			<a href="./pages/send.html"> Send a new pack! </a>
+			<button class="enableEthereumButton">Enable Ethereum</button>
+			<h2>Account: <span class="showAccount"></span></h2>
+			
 			<section id="defaultSection">
-				<form onsubmit="createPost(); getUserPosts(); return false;"
+				<form onsubmit="createPost(); return false;"
 					id="playform">
 					<fieldset>
 						<legend>Cost</legend>
@@ -20,23 +24,18 @@
 					</fieldset>
 				</form>
 			</section>
-			<footer>
-				<header><h2>Status</h2></header>
-				<p>Your account address is:
-					<code id="myaccountaddress">n</code>.
-					<!-- see the JS function displayAccountAddress() -->
-				</p>
-				<p>Your current balance in BitMathCoins is:
-					<strong id="mybalance">x</strong>.
-				</p>
-				<p>Your current balance in Wei is:
-					<strong id="myweibalance">x</strong>.
-				</p>
-				<p>
-					And the minter is...:
-					<strong id="currentminter">y</strong>!
-				</p>
-			</footer>
+			<section id="defaultSection">
+				<form onsubmit="getUserPosts(); return false;"
+					id="playform">
+					<fieldset>
+						<legend>Cost</legend>
+						<label for="get" />
+							<button type="submit">Get!</button>
+					</fieldset>
+				</form>
+			</section>
+
+
 	</body>
 	<script src="dist/js/jquery.min.js"></script>
 	<script src="dist/js/bootstrap.min.js"></script>
