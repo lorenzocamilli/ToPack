@@ -1,43 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
-	<meta charset="utf-8">
-	<head>
-		<title>NewToPack</title>
-	</head>
-	<body>
-			<header><h1>ToPack</h1></header>
-			<button class="enableEthereumButton">Enable Ethereum</button>
-			<h2>Account: <span class="showAccount"></span></h2>
-			
-			<section id="defaultSection">
-				<form onsubmit="createPost(); return false;"
-					id="playform">
-					<fieldset>
-						<legend>Cost</legend>
-						<label for="costInput" />
-						<!-- Notice that "required" imposes a value to be inserted! -->
-						<input type="number" name="cost" id="costInput"
-								required="required"/>
-							<button type="submit">Check!</button>
-					</fieldset>
-				</form>
-			</section>
-			<section id="defaultSection">
-				<form onsubmit="getUserPosts(); return false;"
-					id="playform">
-					<fieldset>
-						<legend>Cost</legend>
-						<label for="get" />
-							<button type="submit">Get!</button>
-					</fieldset>
-				</form>
-			</section>
 
+<head>
 
-	</body>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 	<script src="dist/js/jquery.min.js"></script>
 	<script src="dist/js/bootstrap.min.js"></script>
 	<script src="dist/js/web3.min.js"></script>
-  <!-- To make our code tidier, we separate the JS script from the HTML file -->
 	<script src="index.js"></script>
+	<link rel="stylesheet" href="dist/css/bootstrap.min.css">
+	<title>ToPack</title>
+	<link rel="icon" href="assets/ToPack_icon_no_shadow.png" type="image/x-icon">
+</head>
+
+<body>
+	<br><br><br>
+
+	<div class="container-fluid text-center">
+		<img src="assets/ToPack_logo_blu_shadow.png" alt="ToPack logo" class="img-fluid" width="40%" height="40%" />
+		<div class="card ">
+			<div class="card-body">
+				<h3 class="card-title">
+					<h3><b>Welcome</b></h3>
+					<p class="card-text"><b>Connet your account with Metamask</b></p>
+					<a class="btn btn-primary" onclick="run()"><img src="assets/metamask-icon-48.png" width="40%"
+							height="40%"><b>Connect</b></a>
+			</div>
+		</div>
+</body>
+
 </html>
