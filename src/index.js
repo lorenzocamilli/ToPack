@@ -1,18 +1,17 @@
 $("form").submit(function (e) { e.preventDefault(); });
 
 var contractAddress = '0xC9bF68699ce5C685b229Db6D688519027586bC23';
-var contractJSON = "build/contracts/Pack.json"
+var contractJSON = "build/contracts/Pack.json";
 var senderAddress = '0x0';
 var contract = null;
-
 const ethEnabled = async () => {
   if (window.ethereum) {
-    console.log("If")
+    console.log("If");
     const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
     window.web3 = new Web3(window.ethereum);
     return true;
   }
-  console.log("esle")
+  console.log("esle");
 
   return false;
 }
@@ -72,8 +71,8 @@ async function createPost() {
   contract.methods.createPost(senderAddress.toString(), cost).send({ from: senderAddress, gasLimit: 300000 }).then(function (result) {
     console.log("Price sent: " + cost);
   })
-  
-  
+
+
   return false;
 }
 

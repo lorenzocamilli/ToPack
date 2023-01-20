@@ -15,16 +15,18 @@ contract Pack{
         uint deliverTime;       // this have to been taken from the frontend, for the moment it's setted to 0
     }
 
-    uint currentPostID;  
+    uint currentPostID; 
     mapping (address => Post[]) public postMap;   // map of psot of all users
 	mapping (address => uint) public usersBalnce; // map of balances of users
-
+    address[] public addressesArray;
 
     constructor()  {
         usersBalnce[msg.sender]=address(msg.sender).balance;
     }
 
     error Message(string message); 
+   // event array(uint addressesArray.length)
+
 
     function createPost(address _postAuthor,address _senderAddress, uint _shippingCost, uint _packValue) public{  
         // create a new post, insert the post in the array of posts of the sender 
@@ -34,6 +36,7 @@ contract Pack{
         postCreationTime: block.timestamp, deliverTime: 0 });
         postMap[_postAuthor].push(newPost);
 
+        addressesArray.push(_postAuthor);
         currentPostID = currentPostID +1;   
     }
 
