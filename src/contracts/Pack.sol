@@ -7,7 +7,7 @@ contract Pack{
     struct Post{
         uint postID;   
         address postAuthor; 
-        address senderAddress; / 
+        address senderAddress; 
         uint shippingCost;
         uint packValue;
         // time are in Epoch time (number of seconds from 1 jannuary 1970)
@@ -16,7 +16,7 @@ contract Pack{
     }
 
     uint currentPostID;  
-    mapping (address => Post[])  postMap;   // map of psot of all users
+    mapping (address => Post[]) public postMap;   // map of psot of all users
 	mapping (address => uint) public usersBalnce; // map of balances of users
 
 
@@ -26,7 +26,7 @@ contract Pack{
 
     error Message(string message); 
 
-    function createPost(address _postAuthor, address _shippingCost, uint _packValue uint _shippingCost) public{  
+    function createPost(address _postAuthor,address _senderAddress, uint _shippingCost, uint _packValue) public{  
         // create a new post, insert the post in the array of posts of the sender 
         
         Post memory newPost = Post({postID: currentPostID, postAuthor: _postAuthor, 
