@@ -72,7 +72,8 @@ async function createPost() {
   contract.methods.createPost(senderAddress.toString(), cost).send({ from: senderAddress, gasLimit: 300000 }).then(function (result) {
     console.log("Price sent: " + cost);
   })
-
+  
+  
   return false;
 }
 
