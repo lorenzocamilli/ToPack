@@ -3,7 +3,7 @@ $("form").submit(function(e){e.preventDefault();});
 
 var contractAddress = '0x83e99B42AFca58e3Fb2AcfA40bEf15f6d9aadBF7';
 // Set the relative URI of the contract’s skeleton (with ABI)
-var contractJSON = "build/contracts/Pack.json"
+var contractJSON = "../build/contracts/Pack.json"
 // Set the sending address
 var senderAddress = '0x0';
 // Set contract ABI and the contract
@@ -56,32 +56,15 @@ async function initialise(contractAddress) {
   });
 
     //Insert other function calls here for the starting
-
+    
+    //Wait the sender address to be displayed
+	await showAccountAddr();
+}
+//Displays the account address
+function showAccountAddr() {
+    $("#myaccountaddress").html(
+		senderAddress
+	);
+	return false;
 }
 
-
-
-async function createPost() {
-    var cost = $('#costInput').val();
-    if (cost < 1) {
-      alert("The given guess should be higher than 0");
-      return false;
-    }
-  
-    console.log("Provided cost is: " + cost);
-  
-    contract.methods.createPost(cost).send({ from: senderAddress, gasLimit: 300000 }).then(function (result) {
-      console.log("Price sent: " + cost);
-    })
-    return false;
-  }
-
-  async function getUserPosts(){
-    //console.log("src:" + senderAddress);   //print the correct address of the sender of the transaction
-    contract.methods.getUserPosts().call((err, result) => { console.log(result) })	
-  }
-
-// async function getUserPosts(){
-//   //console.log("src:" + senderAddress);   //print the correct address of the sender of the transaction
-//   contract.methods.getUserPosts(senderAddress).call((err, result) => { console.log(result) })	
-// }
