@@ -68,3 +68,6 @@ function showAccountAddr() {
 	return false;
 }
 
+async function givePack(){
+
+}

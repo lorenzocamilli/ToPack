@@ -16,11 +16,10 @@
 
 			<section id="sendTX">
                 <p> Sender address (you):
-					<code id="myaccountaddress">Address not loaded</code>.
+					<code id="myaccountaddress">Address not loaded</code>
 					<!-- see the JS function displayAccountAddress() -->
 				</p>
-				
-                <form>
+                <form onsubmit="givePack()">
                     <div class="form-row">
                       <div class="form-group col-md-6">
                         <label for="shipCost">Shipping cost</label>
@@ -34,12 +33,12 @@
 
                     <div class="form-group">
                       <label for="inputAddress">Traveller Address</label>
-                      <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+                      <input type="text" class="form-control" id="inputAddress">
                     </div>
 
                     <div class="form-group">
                       <label for="inputAddress2">Receiver Address</label>
-                      <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
+                      <input type="text" class="form-control" id="inputAddress2">
                     </div>
 
                     
