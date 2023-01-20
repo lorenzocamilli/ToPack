@@ -1,6 +1,6 @@
 $("form").submit(function (e) { e.preventDefault(); });
 
-var contractAddress = '0x83e99B42AFca58e3Fb2AcfA40bEf15f6d9aadBF7';
+var contractAddress = '0xAad5ACd8896DefF3e26a0Cd34515D40b43306d07';
 // Set the relative URI of the contract’s skeleton (with ABI)
 var contractJSON = "build/contracts/Pack.json"
 // Set the sending address

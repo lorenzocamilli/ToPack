@@ -1,7 +1,6 @@
-// Prevent forms from submitting and reloading the page
-$("form").submit(function(e){e.preventDefault();});
+$("form").submit(function (e) { e.preventDefault(); });
 
-var contractAddress = '0x83e99B42AFca58e3Fb2AcfA40bEf15f6d9aadBF7';
+var contractAddress = '0xAad5ACd8896DefF3e26a0Cd34515D40b43306d07';
 // Set the relative URI of the contract’s skeleton (with ABI)
 var contractJSON = "../build/contracts/Pack.json"
 // Set the sending address
@@ -68,6 +67,23 @@ function showAccountAddr() {
 	return false;
 }
 
-async function givePack(){
+async function giveBox(){
+  console.log("centratoiao");
+  //prendo le variabili dal form:
+  var travellerAddr = $('#travellerAddr').val();
+  var receiverAddr = $('#receiverAddr').val();
+  var cost = $('#shipCost').val();
+  var value = $('#shipCost').val();
+
+  contract.methods.sendBox(senderAddress.toString(), travellerAddr.toString(), receiverAddr.toString(), cost, value).send({
+    from: senderAddress, gasLimit: 300000}).then(function (result) {
+      console.log("ciao");
+    })
+
+
+    /*
+  contract.methods.sendBox(senderAddress.toString(), cost).send({ from: senderAddress, gasLimit: 300000 }).then(function (result) {
+    console.log("Price sent: " + cost);
+  })*/
 
 }

@@ -1,69 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
-	<script src="../dist/js/jquery.min.js"></script>
-	<script src="../dist/js/bootstrap.min.js"></script>
-	<script src="../dist/js/web3.min.js"></script>
-    <link href="../dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-    <script src="../dist/css/bootstrap.min.css"></script>
-  <!-- To make our code tidier, we separate the JS script from the HTML file -->
-	<script src="send.js"></script>
-	<meta charset="utf-8">
-	<head>
-		<title>Send a pack</title>
-	</head>
-	<body>
-			<header><h1>Give the pack to another user</h1></header>
+<script src="../dist/js/jquery.min.js"></script>
+<script src="../dist/js/bootstrap.min.js"></script>
+<script src="../dist/js/web3.min.js"></script>
+<link href="../dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<!-- To make our code tidier, we separate the JS script from the HTML file -->
+<script src="send.js"></script>
+<meta charset="utf-8">
 
-			<section id="sendTX">
-                <p> Sender address (you):
-					<code id="myaccountaddress">Address not loaded</code>
-					<!-- see the JS function displayAccountAddress() -->
-				</p>
-                <form onsubmit="givePack()">
-                    <div class="form-row">
-                      <div class="form-group col-md-6">
-                        <label for="shipCost">Shipping cost</label>
-                        <input type="number" class="form-control" id="shipCost" placeholder="Money for the traveller">
-                      </div>
-                      <div class="form-group col-md-6">
-                        <label for="packValue">Pack value</label>
-                        <input type="number" class="form-control" id="packValue" placeholder="Blocked for refound">
-                      </div>
-                    </div>
+<head>
+	<title>Send a pack</title>
+</head>
 
-                    <div class="form-group">
-                      <label for="inputAddress">Traveller Address</label>
-                      <input type="text" class="form-control" id="inputAddress">
-                    </div>
+<body>
+	<header>
+		<div class="col-md-12">
+			<h1>Give the pack to another user</h1>
+		</div>
+	</header>
 
-                    <div class="form-group">
-                      <label for="inputAddress2">Receiver Address</label>
-                      <input type="text" class="form-control" id="inputAddress2">
-                    </div>
+	<section id="sendTX">
+		<div class="col-md-12">
 
-                    
-                    <button type="submit" class="btn btn-primary">Send pack</button>
-                  </form>
+			<p> Sender address (you):
+				<code id="myaccountaddress">Address not loaded</code>
+				<!-- see the JS function displayAccountAddress() -->
+			</p>
+
+		</div>
+		<form onsubmit="giveBox()">
+			<div class="form-row">
+				<div class="form-group col-md-3">
+					<label for="shipCost">Shipping cost</label>
+					<input style="width: 200px" type="number" class="form-control" id="shipCost"
+						placeholder="Money for the traveller" required>
+				</div>
+				<div class="form-group col-md-3">
+					<label for="boxValue">Pack value</label>
+					<input style="width: 200px" type="number" class="form-control" id="boxValue"
+						placeholder="Blocked for refound" required>
+				</div>
+			</div>
+
+			<div class="form-group col-md-12">
+				<label for="travellerAddr">Traveller Address</label>
+				<input style="width: 550px" type="text" class="form-control" id="travellerAddr" required>
+			</div>
+
+			<div class="form-group col-md-12">
+				<label for="receiverAddr">Receiver Address</label>
+				<input style="width: 550px" type="text" class="form-control" id="receiverAddr" required>
+			</div>
+
+			<div class="col-md-12" style="width:100px">
+			<button type="submit" class="btn btn-primary" style="width: 100px">Send pack</button>
+			</div>
+		</form>
+
+		<a href="../index.html"> Go to the homepage </a>
 
 
-			</section>
+	</section>
 
-			<!-- <footer>
-				<header><h2>Status</h2></header>
-				<p>Your account address is:
-					<code id="myaccountaddress">n</code>.
-					// see the JS function displayAccountAddress()
-				</p>
-				<p>Your current balance in BitMathCoins is:
-					<strong id="mybalance">x</strong>.
-				</p>
-				<p>Your current balance in Wei is:
-					<strong id="myweibalance">x</strong>.
-				</p>
-				<p>
-					And the minter is...:
-					<strong id="currentminter">y</strong>!
-				</p>
-			</footer> -->
-	</body>
+
+</body>
+
 </html>

@@ -7,6 +7,7 @@
 
 # production
 /build
+/build/contracts/Migrations.json
 src/contracts/artifacts/
 
 # misc

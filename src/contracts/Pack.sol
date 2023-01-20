@@ -58,6 +58,48 @@ contract Pack{
         usersBalnce[receiver] +=amount; 
     }
 
+        struct Box {
+        uint256 boxID;
+        address senderAddr;
+        address travellerAddr;
+        address receiverAddr;
+        uint256 shippingCost;
+        uint256 boxValue;
+    }
+
+    uint256 currentBoxID;
+
+    mapping(address => uint256[]) public sentMap; // each user has associated the ID of all the box sent
+    mapping(address => uint256[]) public travellingMap; // each user has associated the IDs of all box he/she's trasferring
+    //mapping(address => uint256[]) public receivedMap; // each user has associated the IDs of all the box received
+    
+    mapping(address => uint256) public usersBalance; // map of balance of users
+    
+    Box[] public boxesArray;
+
+    // event array(uint addressesArray.length)
+
+        function sendBox(
+        address _senderAddr,
+        address _travellerAddr,
+        address _receiverAddr,
+        uint256 _shippingCost,
+        uint256 _boxValue
+    ) public {
+        //give the box to the traveller: block money trasferring them to the contract, add the box to each user
+        Box memory newBox = Box({boxID: currentBoxID, senderAddr: _senderAddr, 
+        travellerAddr: _travellerAddr, receiverAddr: _receiverAddr, shippingCost: _shippingCost, boxValue: _boxValue});
+        sentMap[_senderAddr].push(currentBoxID);
+
+        boxesArray.push(newBox);
+        //boxesArray.push(Box(currentBoxID, _senderAddr, _travellerAddr, _receiverAddr, _shippingCost, _boxValue));
+
+       // addressesArray.push(_senderAddr);
+        currentBoxID = currentBoxID +1;
+
+        
+    }
+
 } 
 
 
