@@ -24,27 +24,26 @@ contract Pack{
 
     error Message(string message); 
 
-    function createPost(uint _postPrice) public{  
+    function createPost(address user, uint _postPrice) public{  
         // create a new post, insert the post in the array of posts of the sender 
         
-        Post memory newPost = Post({postID: currentPostID, postAuthor: msg.sender,
+        Post memory newPost = Post({postID: currentPostID, postAuthor: user,
         postPrice: _postPrice, postCreationTime: block.timestamp, deliverTime: 0 });
-        postMap[msg.sender].push(newPost);
+        postMap[user].push(newPost);
 
         currentPostID = currentPostID +1;   
 
-        if (_postPrice  <= usersBalnce[msg.sender]){
+        if (_postPrice  <= usersBalnce[user]){
             // check if the sender have enough money included the gas
             // transfer the money to the contract
             transfer(address(this), _postPrice); // address(this) address of the contract
         }
     }
 
-
-    function getUserPosts() view public returns (Post[] memory ){
+   function getUserPosts(address user) view public returns (Post[] memory ){
         // get the list of posts created by the msg.sender
 
-        return  postMap[msg.sender];
+        return  postMap[user];
     }
 
 

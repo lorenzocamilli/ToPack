@@ -1,83 +1,85 @@
-// Prevent forms from submitting and reloading the page
-$("form").submit(function(e){e.preventDefault();});
+$("form").submit(function (e) { e.preventDefault(); });
 
-var contractAddress = '0xa097A54856Ff37467B1c63453882472f3e0Fe3C3';
-// Set the relative URI of the contract’s skeleton (with ABI)
+var contractAddress = '0xC9bF68699ce5C685b229Db6D688519027586bC23';
 var contractJSON = "build/contracts/Pack.json"
-// Set the sending address
 var senderAddress = '0x0';
-// Set contract ABI and the contract
 var contract = null;
 
-$(window).on('load', function() {
+const ethEnabled = async () => {
+  if (window.ethereum) {
+    console.log("If")
+    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+    window.web3 = new Web3(window.ethereum);
+    return true;
+  }
+  console.log("esle")
+
+  return false;
+}
+
+$(window).on('load', function () {
   initialise(contractAddress);
 });
 
-// Asynchronous function (to work with modules loaded on the go)
-// For further info: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/async_function
 async function initialise(contractAddress) {
-  // Initialisation of Web3
-	if (typeof web3 !== 'undefined') {
-	  web3 = new Web3(web3.currentProvider);
-	} else {
-	  // Set the provider you want from Web3.providers
-    // Use the WebSocketProvider to enable events subscription.
-	  web3 = new Web3(new Web3.providers.WebsocketProvider("ws://localhost:7545"));
-	}
 
-  // Load the ABI. We await the loading is done through "await"
-  // More on the await operator: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/await
+  await window.ethereum.enable();
+
+  const accounts = await ethereum.request({
+    method: 'eth_requestAccounts',
+  });
+
+  if (typeof web3 !== 'undefined') {
+    web3 = new Web3(web3.currentProvider);
+  } else {
+    web3 = new Web3(new Web3.providers.WebsocketProvider("ws://localhost:7545"));
+  }
+
   await $.getJSON(contractJSON,
-    function( contractData ) { // Use of IIFEs: https://developer.mozilla.org/en-US/docs/Glossary/IIFE
-      // console.log(contractAbi);
+    function (contractData) {
       contract = new web3.eth.Contract(contractData.abi, contractAddress);
     }
   ).catch((error) => { console.error(error); });
-  // Arrow funcction expression at work. For further info: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions
 
   if (!contract) {
     console.error("No contract loaded.");
     return false;
   }
+  senderAddress = accounts[0]
+  console.log("Sender address set: " + senderAddress)
 
-	// Set the address from which transactions are sent
-	accounts = await web3.eth.getAccounts();
-	// console.log(accounts[0])
-	senderAddress = accounts[0]
-	console.log("Sender address set: " + senderAddress)
-
-	// Subscribe to all events by the contract
-	contract.events.allEvents(
-	callback=function(error, event){ // A "function object". Explained here: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions#The_function_expression_(function_expression)
+  contract.events.allEvents(
+    callback = function (error, event) {
       if (error) {
         console.error(error)
       }
       console.log(event);
-  });
+    });
 
 
 }
 
 
-
 async function createPost() {
-    var cost = $('#costInput').val();
-    if (cost < 1) {
-      alert("The given guess should be higher than 0");
-      return false;
-    }
-  
-    console.log("Provided cost is: " + cost);
-  
-    contract.methods.createPost(cost).send({ from: senderAddress, gasLimit: 300000 }).then(function (result) {
-      console.log("Price sent: " + cost);
-    })
-  
+  var cost = $('#costInput').val();
+  if (cost < 1) {
+    alert("The given guess should be higher than 0");
     return false;
   }
 
+  console.log("Provided cost is: " + cost);
+
+  contract.methods.createPost(senderAddress.toString(), cost).send({ from: senderAddress, gasLimit: 300000 }).then(function (result) {
+    console.log("Price sent: " + cost);
+  })
+
+  return false;
+}
 
 
-async function getUserPosts(){
-  contract.methods.getUserPosts().call((err, result) => { console.log(result) })	
+
+async function getUserPosts() {
+
+  console.log("GET", senderAddress)
+  contract.methods.getUserPosts(senderAddress.toString()).call((err, result) => { console.log(result) })
 }
