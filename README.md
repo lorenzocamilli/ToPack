@@ -7,5 +7,17 @@ Any step is guaranteed by the blockchain.
 
 ## Requirements
 - Solidity
-- An IDE for Solidity, a good choice is [Remix IDE](https://remix-project.org/)
+- An IDE for Solidity, a good choice is [Remix IDE](https://remix-project.org/) or VSCode
+- [NodeJS](https://trufflesuite.com/ganache/) and the required libraries. To install the libraries run `npm install` in  `src/` directory 
+- [Ganache](https://trufflesuite.com/ganache/)
+- [Truffle](https://trufflesuite.com/)  
+- [Metmask](https://metamask.io/download/) extension
+
+## Run the project
+1. Open ganache
+2. Compile the contracts using `truffle compile`
+3. Deploy the contracts using `truffle deploy`
+4. Change the contract address in `scripts/index.js` with the one in ganache
+5. Create a local server with ` http-server http://localhost:8080` or any alternative such as python
+
 
