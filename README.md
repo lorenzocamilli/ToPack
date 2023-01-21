@@ -8,9 +8,10 @@ Any step is guaranteed by the blockchain.
 ## Requirements
 - Solidity
 - An IDE for Solidity, a good choice is [Remix IDE](https://remix-project.org/) or VSCode
-- [NodeJS](https://trufflesuite.com/ganache/) and the following libraries: `web3js`, `jquerry`, `http-server`
+- [NodeJS](https://trufflesuite.com/ganache/) and the required libraries. To install the libraries run `npm install` in  `src/` directory 
 - [Ganache](https://trufflesuite.com/ganache/)
 - [Truffle](https://trufflesuite.com/)  
+- [Metmask](https://metamask.io/download/) extension
 
 ## Run the project
 1. Open ganache
