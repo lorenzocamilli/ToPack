@@ -1,5 +1,5 @@
 
-var contractAddress = '0xD63878db565546B39F58d32EF6d42814480C8e0f';
+var contractAddress = '0x473f5b8F38ab0379F96b88666e94A4CfEBE0ce55';
 var contractJSON = "build/contracts/Pack.json";
 var senderAddress = '0x0';
 var contract = null;
