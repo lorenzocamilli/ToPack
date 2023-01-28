@@ -1,5 +1,8 @@
+import { CONTRACT } from "../config";
 
-var contractAddress = '0xd7cBE490a3236A67fb86752540619f05672d2699';
+
+//var contractAddress = '0xd7cBE490a3236A67fb86752540619f05672d2699';
+contractAddress =  CONTRACT;
 var contractJSON = "../build/contracts/Pack.json";
 var senderAddress = '0x0';
 var contract = null;
