@@ -8,18 +8,28 @@
 	<script src="../dist/js/jquery.min.js"></script>
 	<script src="../dist/js/bootstrap.min.js"></script>
 	<script src="../dist/js/web3.min.js"></script>
-	<script src="shippings.js" ></script>
+	<script src="shippings.js" type="module" ></script>
 	<link rel="stylesheet" href="../dist/css/bootstrap.min.css">
 	<title>ToPack</title>
 	<link rel="icon" href="../assets/ToPack_icon_no_shadow.png" type="image/x-icon">
+	<script>document.querySelector('.btn btn-primary get').addEventListener('click', function(getUserPosts){
+		getUserPosts()
+	});</script>
+
 </head>
 
 <body>
 	<br><br><br>
-				<a class="btn btn-primary" onclick="createPost()""><b>POST</b></a>
+				<a class="btn btn-primary" onclick="createPost()"><b>POST</b></a>
 
-			<a class="btn btn-primary" onclick="getUserPosts()""><b>GET</b></a>
+			<a class="btn btn-primary get" onclick="getUserPosts()"><b>GET</b></a>
+			
+			
+			
+			<div id="cards">
+			</div>
 
+</div>
 	
 </body>
 

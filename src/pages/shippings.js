@@ -1,26 +1,27 @@
-import { CONTRACT } from "../config";
 
 
 //var contractAddress = '0xd7cBE490a3236A67fb86752540619f05672d2699';
-contractAddress =  CONTRACT;
+var contractAddress = "0x2299e9bA7FDD6016eC8E39dd8F00C0917E221394";
+//console.log(contractAddress)
 var contractJSON = "../build/contracts/Pack.json";
+console.log(contractJSON)
 var senderAddress = '0x0';
-var contract = null;
+var contract;
 const ethEnabled = async () => {
     if (window.ethereum) {
-        console.log("If");
         const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
         window.web3 = new Web3(window.ethereum);
         return true;
     }
-    console.log("esle");
-
     return false;
 }
 
 $(window).on('load', function () {
     run();
+
 });
+
+
 
 
 async function run() {
@@ -38,7 +39,6 @@ async function run() {
 
 
 async function initialise(contractAddress, accounts) {
-
     if (typeof web3 !== 'undefined') {
         web3 = new Web3(web3.currentProvider);
     } else {
@@ -57,7 +57,7 @@ async function initialise(contractAddress, accounts) {
     }
     senderAddress = accounts[0]
     console.log("Sender address set: " + senderAddress)
-
+    var callback;
     contract.events.allEvents(
         callback = function (error, event) {
             if (error) {
@@ -66,19 +66,23 @@ async function initialise(contractAddress, accounts) {
             console.log(event);
         });
 
+    subscribeToEvents()
+    createPost();
+    getUserPosts()
 
 }
 
 function subscribeToEvents() {
+    var result;
     contract.events.PostsEvent( // Subscribe to all Win events
         function (error, event) {
             if (!error) {
-                var numero = event.PostsEvent();
+                result = event.PostsEvent();
             }
         }
 
     );
-    return numero;
+    return result;
 }
 
 
@@ -95,7 +99,7 @@ async function createPost() {
     console.log("Provided cost is: " + cost);
 
 
-    contract.methods.createPost(senderAddress.toString(), senderAddress.toString(), 1111,  cost).send({ from: senderAddress, gasLimit: 300000 }).then(function (result) {
+    contract.methods.createPost(senderAddress.toString(), senderAddress.toString(), 1111, cost).send({ from: senderAddress, gasLimit: 300000 }).then(function (result) {
         console.log("Price sent: " + cost);
     })
 
@@ -107,40 +111,45 @@ async function createPost() {
 
 
 async function getUserPosts() {
+
+
     console.log("Contract", contractAddress)
     console.log("GET", senderAddress)
 
-    var res = contract.methods.getUserPosts(senderAddress.toString()).call((err, result) => { 
-        
-        
-        
+
+    var res = contract.methods.getUserPosts(senderAddress.toString()).call((err, result) => {
+
+        var html='<div class="row row-cols-1 row-cols-md-2 g-4"';
+
         //console.log(result) 
         const campaigns = [];
         for (let i = 0; i < Object.values(result).length; i++) {
-            const id = result[i]
-            console.log("RI", result[i][5])
+            var id = id + result[i]
+            html+='<div class="col"><div class="card"><div class="card-body"> <h5 class="card-title"> Cost:'+result[i][3]+'</h5><p class="card-text">Sender:'+ result[i][2]+'</p></div></div></div>'
+            $('#cards').append(html);
+
         }
 
 
-
-    
     })
 
 
-/*
-    var r = await contract.methods.getUserPosts(senderAddress.toString())
-        .call({ from: senderAddress })
-        .then(async function (result) {
-            const campaigns = [];
-            for (let i = 0; i < Object.values(result).length; i++) {
-                const id = result[i]
-            }
-            console.log("C", campaigns)
+ 
 
-        });
-    console.log("R", r)
-
-    */
+    /*
+        var r = await contract.methods.getUserPosts(senderAddress.toString())
+            .call({ from: senderAddress })
+            .then(async function (result) {
+                const campaigns = [];
+                for (let i = 0; i < Object.values(result).length; i++) {
+                    const id = result[i]
+                }
+                console.log("C", campaigns)
+    
+            });
+        console.log("R", r)
+    
+        */
 }
 
 
