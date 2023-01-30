@@ -12,32 +12,27 @@
     <script src="https://code.jquery.com/jquery-3.6.3.min.js"
         integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.2.7/web3.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mocha/1.0.2/package/lib/browser/fs.js"></script>  <title>ToPack</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mocha/1.0.2/package/lib/browser/fs.js"></script>
+    <title>ToPack</title>
     <link rel="icon" href="../assets/ToPack_icon_no_shadow.png" type="image/x-icon">
-    <script>
-
-        
-    /*document.querySelector('.btn btn-primary get').addEventListener('click', function (getUserPosts) {
-            getUserPosts()
-        });*/</script>
-
 </head>
 
 <body>
     <br><br><br>
+
+    <!-- Debug (temporary) buttons-->
     <a class="btn btn-primary" onclick="createPost()"><b>POST</b></a>
 
     <a class="btn btn-primary get" onclick="getUserPosts()"><b>GET</b></a>
 
 
+    <div class="container-fluid ">
 
-    <div id="cards">
+        <div id="cards">
+            <!-- Dinamically insert cards with shippings of the useer-->
+        </div>
     </div>
-
-    </div>
-
 </body>
-
 
 <script>
 
@@ -49,14 +44,10 @@
     console.log(contractJSON)
     var senderAddress = '0x0';
     var contract;
-   
 
     $(window).on('load', function () {
         run();
     });
-
-
-
 
     async function run() {
         if (typeof window.ethereum !== 'undefined') {
@@ -71,7 +62,6 @@
         console.log("Get account:", accounts)
         initialise(contractAddress, accounts)
     }
-
 
     async function initialise(contractAddress, accounts) {
         if (typeof web3 !== 'undefined') {
@@ -102,8 +92,6 @@
             });
 
         subscribeToEvents()
-
-
     }
 
     function subscribeToEvents() {
@@ -119,16 +107,13 @@
         return result;
     }
 
-
-
-
     async function createPost() {
         const cost = 10;
         if (cost < 1) {
             alert("The given guess should be higher than 0");
             return false;
         }
-        const sender=senderAddress.toString()
+        const sender = senderAddress.toString()
         contract.methods.createPost(sender, sender, 1111, cost).send({ from: senderAddress, gasLimit: 300000 }).then(function (result) {
             console.log("Price sent: " + cost);
         })
@@ -136,48 +121,30 @@
         return false;
     }
 
-
     async function getUserPosts() {
-
 
         console.log("Contract", contractAddress)
         console.log("GET", senderAddress)
 
-        var res = contract.methods.getUserPosts(senderAddress.toString()).call((err, result) => {           
-            var shippingCard = '<div class="card" >'
+        var res = contract.methods.getUserPosts(senderAddress.toString()).call((err, result) => {
+            var shippingCard = ''
 
             for (let i = 0; i < Object.values(result).length; i++) {
                 console.log("RES:", result)
-                shippingCard += '<div class="card">\
-                                        <h2> Shipping #'+ result[i][0]+'<br>\
-                                            Author: '+ result[i][2] + '\
-                                     </div>\
-                                </div>';
+                shippingCard += '<div class="card border-dark mx-auto mb-3" style="max-width: 85%;">\
+                                        <div class="card-body">\
+                                        <h3 class="card-title"><b>Shipping id: '+ result[i][0] + '</b><h3>\
+                                            <p class="card-text">\
+                                            Author: '+ result[i][2] + '<br>\
+                                            Pack value: '+ result[i][3] + '<br>\
+                                            Shiipping cost: '+ result[i][4] + '\
+                                        </p></div>\
+                                     </div>';
             }
             $('#cards').append(shippingCard);
 
         })
-
-
-
-        
     }
 
-
-
-
-
-
-
-
-
-
-
-
 </script>
-
-
-
-
-
 </html>
