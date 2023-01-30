@@ -33,7 +33,7 @@ contract Pack{
         
         Post memory newPost = Post({postID: currentPostID, postAuthor: _postAuthor, 
         senderAddress: _senderAddress, packValue: _packValue, shippingCost: _shippingCost, 
-        postCreationTime: block.timestamp, deliverTime: 0 });
+        postCreationTime:0, deliverTime: 0 });
         postMap[_postAuthor].push(newPost);
 
         addressesArray.push(_postAuthor);

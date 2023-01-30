@@ -3,34 +3,181 @@
 
 <head>
 
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
+        integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
+        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"
+        integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.2.7/web3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mocha/1.0.2/package/lib/browser/fs.js"></script>  <title>ToPack</title>
+    <link rel="icon" href="../assets/ToPack_icon_no_shadow.png" type="image/x-icon">
+    <script>
 
-	<script src="../dist/js/jquery.min.js"></script>
-	<script src="../dist/js/bootstrap.min.js"></script>
-	<script src="../dist/js/web3.min.js"></script>
-	<script src="shippings.js" type="module" ></script>
-	<link rel="stylesheet" href="../dist/css/bootstrap.min.css">
-	<title>ToPack</title>
-	<link rel="icon" href="../assets/ToPack_icon_no_shadow.png" type="image/x-icon">
-	<script>document.querySelector('.btn btn-primary get').addEventListener('click', function(getUserPosts){
-		getUserPosts()
-	});</script>
+        
+    /*document.querySelector('.btn btn-primary get').addEventListener('click', function (getUserPosts) {
+            getUserPosts()
+        });*/</script>
 
 </head>
 
 <body>
-	<br><br><br>
-				<a class="btn btn-primary" onclick="createPost()"><b>POST</b></a>
+    <br><br><br>
+    <a class="btn btn-primary" onclick="createPost()"><b>POST</b></a>
 
-			<a class="btn btn-primary get" onclick="getUserPosts()"><b>GET</b></a>
-			
-			
-			
-			<div id="cards">
-			</div>
+    <a class="btn btn-primary get" onclick="getUserPosts()"><b>GET</b></a>
 
-</div>
-	
+
+
+    <div id="cards">
+    </div>
+
+    </div>
+
 </body>
+
+
+<script>
+
+
+    //var contractAddress = '0xd7cBE490a3236A67fb86752540619f05672d2699';
+    var contractAddress = "0x2299e9bA7FDD6016eC8E39dd8F00C0917E221394";
+    //console.log(contractAddress)
+    var contractJSON = "../build/contracts/Pack.json";
+    console.log(contractJSON)
+    var senderAddress = '0x0';
+    var contract;
+   
+
+    $(window).on('load', function () {
+        run();
+    });
+
+
+
+
+    async function run() {
+        if (typeof window.ethereum !== 'undefined') {
+            console.log('MetaMask is installed!');
+        }
+
+        await window.ethereum.enable();
+
+        const accounts = await ethereum.request({
+            method: 'eth_requestAccounts',
+        });
+        console.log("Get account:", accounts)
+        initialise(contractAddress, accounts)
+    }
+
+
+    async function initialise(contractAddress, accounts) {
+        if (typeof web3 !== 'undefined') {
+            web3 = new Web3(web3.currentProvider);
+        } else {
+            web3 = new Web3(new Web3.providers.WebsocketProvider("ws://localhost:7545"));
+        }
+
+        await $.getJSON(contractJSON,
+            function (contractData) {
+                contract = new web3.eth.Contract(contractData.abi, contractAddress);
+            }
+        ).catch((error) => { console.error(error); });
+
+        if (!contract) {
+            console.error("No contract loaded.");
+            return false;
+        }
+        senderAddress = accounts[0]
+        console.log("Sender address set: " + senderAddress)
+        var callback;
+        contract.events.allEvents(
+            callback = function (error, event) {
+                if (error) {
+                    console.error(error)
+                }
+                console.log(event);
+            });
+
+        subscribeToEvents()
+
+
+    }
+
+    function subscribeToEvents() {
+        var result;
+        contract.events.PostsEvent( // Subscribe to all Win events
+            function (error, event) {
+                if (!error) {
+                    result = event.PostsEvent();
+                }
+            }
+
+        );
+        return result;
+    }
+
+
+
+
+    async function createPost() {
+        const cost = 10;
+        if (cost < 1) {
+            alert("The given guess should be higher than 0");
+            return false;
+        }
+        const sender=senderAddress.toString()
+        contract.methods.createPost(sender, sender, 1111, cost).send({ from: senderAddress, gasLimit: 300000 }).then(function (result) {
+            console.log("Price sent: " + cost);
+        })
+
+        return false;
+    }
+
+
+    async function getUserPosts() {
+
+
+        console.log("Contract", contractAddress)
+        console.log("GET", senderAddress)
+
+        var res = contract.methods.getUserPosts(senderAddress.toString()).call((err, result) => {           
+            var shippingCard = '<div class="card" >'
+
+            for (let i = 0; i < Object.values(result).length; i++) {
+                console.log("RES:", result)
+                shippingCard += '<div class="card">\
+                                        <h2> Shipping #'+ result[i][0]+'<br>\
+                                            Author: '+ result[i][2] + '\
+                                     </div>\
+                                </div>';
+            }
+            $('#cards').append(shippingCard);
+
+        })
+
+
+
+        
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+
+
+
+
 
 </html>
