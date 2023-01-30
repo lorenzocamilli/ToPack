@@ -16,6 +16,16 @@
     <title>ToPack</title>
     <link rel="icon" href="../assets/ToPack_icon_no_shadow.png" type="image/x-icon">
 </head>
+<div id="navbar">
+
+    
+    <script type="text/javascript">
+        $(function () {
+            $("#navbar").load("navbar.html");
+        });
+    </script>
+
+</div>
 
 <body>
     <br><br><br>
@@ -92,6 +102,7 @@
             });
 
         subscribeToEvents()
+        getUserPosts()
     }
 
     function subscribeToEvents() {
@@ -146,4 +157,5 @@
     }
 
 </script>
+
 </html>
