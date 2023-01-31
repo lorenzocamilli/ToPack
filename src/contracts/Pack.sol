@@ -26,14 +26,14 @@ contract Pack{
 
     error Message(string message); 
    // event array(uint addressesArray.length)
-
+    event PostsEvent( Post[] );
 
     function createPost(address _postAuthor,address _senderAddress, uint _shippingCost, uint _packValue) public{  
         // create a new post, insert the post in the array of posts of the sender 
         
         Post memory newPost = Post({postID: currentPostID, postAuthor: _postAuthor, 
         senderAddress: _senderAddress, packValue: _packValue, shippingCost: _shippingCost, 
-        postCreationTime: block.timestamp, deliverTime: 0 });
+        postCreationTime:0, deliverTime: 0 });
         postMap[_postAuthor].push(newPost);
 
         addressesArray.push(_postAuthor);
@@ -41,9 +41,10 @@ contract Pack{
     }
 
     
-   function getUserPosts(address user) view public returns (Post[] memory ){
+   function getUserPosts(address user)  public returns (Post[] memory ){
         // get the list of posts created by the msg.sender
 
+        emit PostsEvent(postMap[user]);
         return  postMap[user];
     }
 
