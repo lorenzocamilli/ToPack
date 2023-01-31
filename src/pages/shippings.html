@@ -28,14 +28,6 @@
 </div>
 
 <body>
-    <br><br><br>
-
-    <!-- Debug (temporary) buttons-->
-    <a class="btn btn-primary" onclick="createPost()"><b>POST</b></a>
-
-    <a class="btn btn-primary get" onclick="getUserPosts()"><b>GET</b></a>
-
-
     <div class="container-fluid ">
 
         <div id="cards">
@@ -118,24 +110,7 @@
         return result;
     }
 
-    async function createPost() {
-        const cost = 10;
-        if (cost < 1) {
-            alert("The given guess should be higher than 0");
-            return false;
-        }
-        const sender = senderAddress.toString()
-        contract.methods.createPost(sender, sender, 1111, cost).send({ from: senderAddress, gasLimit: 300000 }).then(function (result) {
-            console.log("Price sent: " + cost);
-        })
-
-        return false;
-    }
-
     async function getUserPosts() {
-
-        console.log("Contract", contractAddress)
-        console.log("GET", senderAddress)
 
         var res = contract.methods.getUserPosts(senderAddress.toString()).call((err, result) => {
             var shippingCard = ''
