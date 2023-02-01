@@ -40,7 +40,7 @@
 
 
     //var contractAddress = '0xd7cBE490a3236A67fb86752540619f05672d2699';
-    var contractAddress = "0x2299e9bA7FDD6016eC8E39dd8F00C0917E221394";
+    var contractAddress = "0x23517aa7A1a2664AC1C4Cc5AB04fEaEcB14C8b16";
     //console.log(contractAddress)
     var contractJSON = "../build/contracts/Pack.json";
     console.log(contractJSON)
@@ -93,26 +93,13 @@
                 console.log(event);
             });
 
-        subscribeToEvents()
-        getUserPosts()
+
+        getUserBox()
     }
 
-    function subscribeToEvents() {
-        var result;
-        contract.events.PostsEvent( // Subscribe to all Win events
-            function (error, event) {
-                if (!error) {
-                    result = event.PostsEvent();
-                }
-            }
+    async function getUserBox() {
 
-        );
-        return result;
-    }
-
-    async function getUserPosts() {
-
-        var res = contract.methods.getUserPosts(senderAddress.toString()).call((err, result) => {
+        var res = contract.methods.getUserBox(senderAddress.toString()).call((err, result) => {
             var shippingCard = ''
 
             for (let i = 0; i < Object.values(result).length; i++) {

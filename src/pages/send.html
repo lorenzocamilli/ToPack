@@ -1,10 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-<script src="../dist/js/jquery.min.js"></script>
-<script src="../dist/js/bootstrap.min.js"></script>
-<script src="../dist/js/web3.min.js"></script>
-<link href="../dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-<!-- To make our code tidier, we separate the JS script from the HTML file -->
+<script src="https://code.jquery.com/jquery-3.6.3.min.js"
+	integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
 <script src="send.js"></script>
 <meta charset="utf-8">
 
@@ -57,13 +54,12 @@
 
 		<section id="sendTX">
 			<div>
-
 				<p> Sender address (you):
 					<code id="myaccountaddress">Address not loaded</code>
 					<!-- see the JS function displayAccountAddress() -->
 				</p>
-
 			</div>
+
 			<form onsubmit="giveBox(); return false;">
 				<div class="mx-auto mb-3 mt-10 " style="width: 50%">
 					<div class="row">
@@ -72,7 +68,7 @@
 							<input style="width: 100%" type="number" class="form-control" id="shipCost"
 								placeholder="Money for the traveller" inputmode="numeric" required>
 						</div>
-						<div class="col-md-6  mb-3" >
+						<div class="col-md-6  mb-3">
 							<label for="boxValue">Pack value</label>
 							<input style="width: 100%" type="number" class="form-control" id="boxValue"
 								placeholder="Blocked for refound" inputmode="numeric" required>
@@ -80,35 +76,31 @@
 					</div>
 					<div>
 						<div class="row mb-3">
-						<div class="col">
-							<label for="travellerAddr">Traveller Address</label>
-							<input style="width: 100%" type="text" class="form-control" id="travellerAddr" required>
-						</div>
-
+							<div class="col">
+								<label for="travellerAddr">Traveller Address</label>
+								<input style="width: 100%" type="text" class="form-control" id="travellerAddr" required>
+							</div>
 						</div>
 
 						<div class="row mb-3 mb-5">
 							<div class="col">
 
-							<label for="receiverAddr">Receiver Address</label>
-							<input style="width: 100%" type="text" class="form-control" id="receiverAddr" required>
-						</div>
-
+								<label for="receiverAddr">Receiver Address</label>
+								<input style="width: 100%" type="text" class="form-control" id="receiverAddr" required>
+							</div>
 						</div>
 
 						<div class="row">
 							<div class="col-md-3 offset-md-9">
-							<button type="submit" class="btn btn-primary" style="width: 100%">Send pack</button>
+								<button type="submit" class="btn btn-primary" style="width: 100%">Send pack</button>
 							</div>
 						</div>
 					</div>
+
 				</div>
 			</form>
-
-
+			
 		</section>
 	</div>
-
 </body>
-
 </html>
