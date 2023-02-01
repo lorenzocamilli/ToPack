@@ -6,7 +6,9 @@ node_modules/**
 .pnp.js
 
 # production
+build/*
 build/**
+build/contracts/*
 contracts/artifacts/**
 
 

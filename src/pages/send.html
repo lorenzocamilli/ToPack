@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-<script src="../dist/js/jquery.min.js"></script>
-<script src="../dist/js/bootstrap.min.js"></script>
-<script src="../dist/js/web3.min.js"></script>
-<link href="../dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-<!-- To make our code tidier, we separate the JS script from the HTML file -->
+<script src="https://code.jquery.com/jquery-3.6.3.min.js"
+	integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.2.7/web3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mocha/1.0.2/package/lib/browser/fs.js"></script>
+<script src="../conf.js"></script>
 <script src="send.js"></script>
 <meta charset="utf-8">
 
@@ -33,11 +33,29 @@
 		input[type=number] {
 			-moz-appearance: textfield;
 		}
+
+		form {
+			width: 50%;
+			height: 50%;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			box-sizing: border-box;
+			font-size: 1.5em;
+		}
+
+		input {
+        height: 2em;
+        font-size: 2.5em;
+        padding: 0.5em;
+      }
+
+	
 	</style>
 </head>
 
 <div id="navbar">
-
 
 	<script type="text/javascript">
 		$(function () {
@@ -48,67 +66,70 @@
 </div>
 
 <body>
-	<div class="container-fluid ">
-		<header>
-			<div>
-				<h1>Give the pack to another user</h1>
-			</div>
-		</header>
+	<header>
+		<div>
+			<h1>Give the pack to another user</h1>
+		</div>
+	</header>
 
-		<section id="sendTX">
-			<div>
-
-				<p> Sender address (you):
-					<code id="myaccountaddress">Address not loaded</code>
-					<!-- see the JS function displayAccountAddress() -->
-				</p>
-
-			</div>
-			<form onsubmit="giveBox()">
-				<div class="mx-auto mb-3 mt-10 " style="width: 50%">
-					<div class="row">
-						<div class="col-md-6 mb-3">
-							<label for="shipCost">Shipping cost</label>
-							<input style="width: 100%" type="number" class="form-control" id="shipCost"
-								placeholder="Money for the traveller" inputmode="numeric" required>
-						</div>
-						<div class="col-md-6  mb-3" >
-							<label for="boxValue">Pack value</label>
-							<input style="width: 100%" type="number" class="form-control" id="boxValue"
-								placeholder="Blocked for refound" inputmode="numeric" required>
-						</div>
-					</div>
-					<div>
-						<div class="row mb-3">
-						<div class="col">
-							<label for="travellerAddr">Traveller Address</label>
-							<input style="width: 100%" type="text" class="form-control" id="travellerAddr" required>
-						</div>
-
-						</div>
-
-						<div class="row mb-3 mb-5">
-							<div class="col">
-
-							<label for="receiverAddr">Receiver Address</label>
-							<input style="width: 100%" type="text" class="form-control" id="receiverAddr" required>
-						</div>
-
-						</div>
-
-						<div class="row">
-							<div class="col-md-3 offset-md-9">
-							<button type="submit" class="btn btn-primary" style="width: 100%">Send pack</button>
-							</div>
-						</div>
-					</div>
-				</div>
-			</form>
-
-
-		</section>
+	<div>
+		<p> Sender address (you):
+			<code id="myaccountaddress">Address not loaded</code>
+			<!-- see the JS function displayAccountAddress() -->
+		</p>
 	</div>
 
+	<!--div style="width: 50%; background-color: blanchedalmond;" class="login mx-auto"-->
+	<form onsubmit="giveBox(); return false;">
+		<!--div class="mx-auto mb-3 mt-10 " style=" background-color:tomato; height: max-content;"-->
+
+		<div>
+			<div class="row mb-3">
+				<div class="col">
+					<label for="travellerAddr">Traveller Address</label>
+					<input style="width: 100%" type="text" class="form-control form-control-lg" id="travellerAddr"
+						placeholder="0xABc3...xzy" required>
+				</div>
+			</div>
+
+			<div class="row mb-3">
+				<div class="col">
+
+					<label for="receiverAddr">Receiver Address</label>
+					<input style="width: 100%" type="text" class="form-control form-control-lg" id="receiverAddr"
+						placeholder="0xABc3...xzy" required>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-6 mb-3 mb-5">
+				<label for="shipCost">Shipping cost</label>
+				<input style="width: 100%" type="number" class="form-control form-control-lg" id="shipCost" inputmode="numeric"
+					required>
+				<div id="ShippingCost help" class="form-text">(Money for the traveller)</div>
+			</div>
+			<div class="col-md-6 mb-3 mb-5">
+				<label for="boxValue">Pack value</label>
+				<input style="width: 100%" type="number" class="form-control form-control-lg" id="boxValue" inputmode="numeric"
+					required>
+				<div id="PackValue help" class="form-text">(Money blocked for the eventual refund)
+				</div>
+			</div>
+		</div>
+
+		<div>
+			<div class="row">
+				<div class="col-md-3 offset-md-9">
+					<button type="submit" class="btn btn-primary btn-lg" style="width: 100%">Send
+						pack</button>
+				</div>
+			</div>
+		</div>
+
+		<!--/div-->
+	</form>
+	<!--/div-->
 </body>
 
 </html>
