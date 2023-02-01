@@ -72,8 +72,8 @@ async function giveBox() {
   //prendo le variabili dal form:
   var travellerAddr = $('#travellerAddr').val();
   var receiverAddr = $('#receiverAddr').val();
-  let cost = $('#shipCost').val();
-  let value = $('#boxValue').val();
+  let shippingCost = $('#shipCost').val();
+  let boxValue = $('#boxValue').val();
   //Controllo che gli address forniti in input siano diversi
   if (travellerAddr == receiverAddr) {
     alert("The two addresses must be different!");
@@ -89,17 +89,52 @@ async function giveBox() {
     return;
   }
 
-  contract.methods.sendBox(senderAddress, travellerAddr, receiverAddr, cost, value).send({
-    from: senderAddress, to: travellerAddr, gasLimit: 300000
+  web3.eth.getBalance(senderAddress).then((result) => {
+    //console.log('getBalance',result);
+    web3.utils.fromWei(result.c[0], 'ether')
+    senderBalance = result;
+}); //Will give value in.
+  //senderBalance = web3.eth.getBalance(senderAddress).then(console.log);
+  console.log(senderBalance);
+
+  if (senderBalance < shippingCost) {
+    alert("The sender does not have enough money to pay the shipment of the box.");
+    return;
+  }
+
+  var balance = web3.eth.getBalance(travellerAddr); //Will give value in.
+  travellerBalance = web3.utils.toDecimal(balance);
+  if (travellerBalance < boxValue) {
+    alert("The traveller does not have enough money to cover for the value of the box.");
+    return;
+  }
+
+  /*web3.eth.sendTransaction({ 
+    from: senderAddress,
+    to: contractAddress, 
+    value: shippingCost 
+  }).then( function(tx) { ;
+  console.log("Shipment cost locked - Transaction: ", tx); 
+  });
+  console.log("finita");*/
+  /*
+  web3.eth.sendTransaction({ 
+    from: travellerAddr,
+    to: contractAddress, 
+    value: boxValue 
+  }).then( function(tx) { ;
+  console.log("Box value locked - Transaction: ", tx); 
+  });
+
+  contract.methods.assignBox(senderAddress, travellerAddr, receiverAddr, shippingCost, boxValue).send({
+    from: senderAddress, to: contractAddress, gasLimit: 300000
   }).then(function (result) {
-    console.log("Transaction sent");
-    console.log("From: " + senderAddress);
-    console.log("To: " + travellerAddr);
-    console.log("Shipping cost: " + cost);
-    console.log("Box value: " + value);
+    console.log("Box in shipment - Transaction: ");
+    console.log("Sender: " + senderAddress);
+    console.log("Traveller: " + travellerAddr);
+    console.log("Receiver: " + receiverAddr)
+    console.log("Shipping cost: " + shippingCost);
+    console.log("Box value: " + boxValue);
 
-  })
+  })*/
 }
-
-
-
