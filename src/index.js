@@ -1,6 +1,6 @@
 
-var contractAddress = '0x23517aa7A1a2664AC1C4Cc5AB04fEaEcB14C8b16';
-var contractJSON = "build/contracts/Pack.json";
+var contractAddress = exportContract();
+var contractJSON = exportAbi();
 var senderAddress = '0x0';
 var contract = null;
 
@@ -47,6 +47,9 @@ async function initialise(contractAddress, accounts) {
       console.log(event);
     });
 }
+
+
+
 
 
 

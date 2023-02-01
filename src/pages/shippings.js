@@ -1,9 +1,6 @@
 
-
-//var contractAddress = '0xd7cBE490a3236A67fb86752540619f05672d2699';
-var contractAddress = "0x23517aa7A1a2664AC1C4Cc5AB04fEaEcB14C8b16";
-//console.log(contractAddress)
-var contractJSON = "../build/contracts/Pack.json";
+var contractAddress = exportContract();
+var contractJSON = "../"+exportAbi();
 console.log(contractJSON)
 var senderAddress = '0x0';
 var contract;
@@ -22,7 +19,6 @@ async function run() {
     const accounts = await ethereum.request({
         method: 'eth_requestAccounts',
     });
-    console.log("Get account:", accounts)
     initialise(contractAddress, accounts)
 }
 
@@ -53,8 +49,6 @@ async function initialise(contractAddress, accounts) {
             }
             console.log(event);
         });
-
-
     getUserBox()
 }
 
