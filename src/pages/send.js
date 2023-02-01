@@ -75,7 +75,7 @@ async function giveBox() {
   let cost = $('#shipCost').val();
   let value = $('#boxValue').val();
 
-  contract.methods.sendBox(senderAddress.toString(), travellerAddr.toString(), receiverAddr.  toString(), cost, value).send({
+  contract.methods.sendBox(senderAddress, travellerAddr, receiverAddr, cost, value).send({
     from: senderAddress, to: travellerAddr, gasLimit: 300000
   }).then(function (result) {
     console.log("Transaction sent");
