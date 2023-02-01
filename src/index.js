@@ -1,24 +1,8 @@
 
-var contractAddress = '0x2299e9bA7FDD6016eC8E39dd8F00C0917E221394';
+var contractAddress = '0x23517aa7A1a2664AC1C4Cc5AB04fEaEcB14C8b16';
 var contractJSON = "build/contracts/Pack.json";
 var senderAddress = '0x0';
 var contract = null;
-const ethEnabled = async () => {
-  if (window.ethereum) {
-    console.log("If");
-    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-    window.web3 = new Web3(window.ethereum);
-    return true;
-  }
-  console.log("esle");
-
-  return false;
-}
-/*
-$(window).on('load', function () {
-  initialise(contractAddress);
-});
-*/
 
 async function run() {
   if (typeof window.ethereum !== 'undefined') {
@@ -62,54 +46,8 @@ async function initialise(contractAddress, accounts) {
       }
       console.log(event);
     });
-
-
-}
-
-function subscribeToEvents() {
-  contract.events.numberOfAddresses( // Subscribe to all Win events
-    function (error, event) {
-      if (!error) {
-        var numero = event.returnValues();
-      }
-    }
-
-  );
-  return numero;
-}
-
-async function createPost() {
-  var cost = $('#costInput').val();
-  if (cost < 1) {
-    alert("The given guess should be higher than 0");
-    return false;
-  }
-
-  console.log("Provided cost is: " + cost);
-
-
-  contract.methods.createPost(senderAddress.toString(), cost).send({ from: senderAddress, gasLimit: 300000 }).then(function (result) {
-    console.log("Price sent: " + cost);
-  })
-
-
-  console.log(subscribeToEvents)()
-
-  return false;
 }
 
 
 
-async function getUserPosts() {
 
-  console.log("GET", senderAddress)
-  contract.methods.getUserPosts(senderAddress.toString()).call((err, result) => { console.log(result) })
-}
-
-
-
-async function Posts() {
-
-
-
-}
