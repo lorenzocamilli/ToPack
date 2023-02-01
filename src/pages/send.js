@@ -1,8 +1,8 @@
 $("form").submit(function (e) { e.preventDefault(); });
 
-var contractAddress = '0x23517aa7A1a2664AC1C4Cc5AB04fEaEcB14C8b16';
+var contractAddress = exportContract();
 // Set the relative URI of the contract’s skeleton (with ABI)
-var contractJSON = "../build/contracts/Pack.json"
+var contractJSON = "../" + exportAbi();
 // Set the sending address
 var senderAddress = '0x0';
 // Set contract ABI and the contract
@@ -74,6 +74,20 @@ async function giveBox() {
   var receiverAddr = $('#receiverAddr').val();
   let cost = $('#shipCost').val();
   let value = $('#boxValue').val();
+  //Controllo che gli address forniti in input siano diversi
+  if (travellerAddr == receiverAddr) {
+    alert("The two addresses must be different!");
+    return;
+  }
+  //Controllo lunghezza address
+  if (travellerAddr.length !== 42) {
+    alert("Traveller address is not valid!");
+    return;
+  }
+  if (receiverAddr.length !== 42) {
+    alert("Receiver address is not valid!");
+    return;
+  }
 
   contract.methods.sendBox(senderAddress, travellerAddr, receiverAddr, cost, value).send({
     from: senderAddress, to: travellerAddr, gasLimit: 300000
