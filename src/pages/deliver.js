@@ -42,15 +42,8 @@ async function initialise(contractAddress) {
   // Set the address from which transactions are sent
   accounts = await web3.eth.getAccounts();
   //console.log(accounts[0])
-  senderAddress = accounts[0]
-  console.log("Sender address set: " + senderAddress)
-/*
-  //deposit some money onto the contract
-  contract.methods.deposit().send({from: senderAddress,to: contractAddress,
-    value: 20000000000000000000})
-    .then(function (result){
-      console.log("20 ETH depositati");
-    })*/  
+  travellerAddress = accounts[0]
+  console.log("Your address: " + travellerAddress) 
 
   // Subscribe to all events by the contract
   contract.events.allEvents(
@@ -69,65 +62,34 @@ async function initialise(contractAddress) {
 //Displays the account address
 function showAccountAddr() {
   $("#myaccountaddress").html(
-    senderAddress
+    travellerAddress
   );
   return false;
 }
 
-async function giveBox() {
+async function deliverBox() {
   console.log("Function correctly called");
-  //prendo le variabili dal form:
-  var travellerAddr = $('#travellerAddr').val();
-  var receiverAddr = $('#receiverAddr').val();
-  let shippingCost = $('#shipCost').val();
-  let boxValue = $('#boxValue').val();
-  //Controllo che gli address forniti in input siano diversi
-  if (travellerAddr == receiverAddr) {
-    alert("The two addresses must be different!");
-    return;
-  }
-  //Controllo lunghezza address
-  if (travellerAddr.length !== 42) {
-    alert("Traveller address is not valid!");
-    return;
-  }
-  if (receiverAddr.length !== 42) {
-    alert("Receiver address is not valid!");
-    return;
-  }
 
-  senderBalance = Number(await web3.eth.getBalance(senderAddress));
-  if (senderBalance < shippingCost) { // check if the shipper has enough money to pay for the shipment
-    alert("The sender does not have enough money to pay the shipment of the box.");
-    return;
-  }
+  //save the form value
+  let boxID = $('#boxID').val();
+  var boxValue;
+  contract.methods.deliverBox(boxID).send({
+    from: travellerAddress, to: contractAddress, gasLimit: 300000
+  }).then(function (result) {
+    boxValue = result;
+  })
 
-  travellerBalance = Number(await web3.eth.getBalance(travellerAddr)); 
-  if (travellerBalance < boxValue) { // check if the traveller has enough money to cover for the box value
-    alert("The traveller does not have enough money to cover for the value of the box.");
-    return;
-  }  
+  console.log("Box value: " + boxValue);
 
   
-  // here we lock the money from the sender
+  // here we lock the money from the traveller
   web3.eth.sendTransaction({ 
-    from: senderAddress,
+    from: travellerAddress,
     to: contractAddress, 
-    value: shippingCost 
+    value: boxValue 
   }, function(err, transactionHash) {
       if (!err)
-        console.log(transactionHash + " success: shipping cost locked."); 
+        console.log(transactionHash + " success: box value locked."); 
     }
   );
- 
-  contract.methods.assignBox(senderAddress, travellerAddr, receiverAddr, shippingCost, boxValue).send({
-    from: senderAddress, to: contractAddress, gasLimit: 300000
-  }).then(function (result) {
-    console.log("Box in shipment - Transaction: ");
-    console.log("Sender: " + senderAddress);
-    console.log("Traveller: " + travellerAddr);
-    console.log("Receiver: " + receiverAddr)
-    console.log("Shipping cost: " + shippingCost);
-    console.log("Box value: " + boxValue);
-  })
 }

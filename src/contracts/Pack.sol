@@ -42,22 +42,20 @@ contract Pack{
         uint256 _boxValue
     ) public {
         // CHECKS DONE IN WEB3
-        // checking the balances before the completion of the assignment
         
-        // does the sender have enough money for the shipping?
-        //require(_senderAddr.balance >= _shippingCost);
-        // does the traveller have enough money to cover for the value of the box in case of theft?
-        //require(_travellerAddr.balance >= _boxValue); 
-
         //give the box to the traveller: block money trasferring them to the contract, add the box to each user
         Box memory newBox = Box({boxID: currentBoxID, senderAddr: _senderAddr, 
             travellerAddr: _travellerAddr, receiverAddr: _receiverAddr, shippingCost: _shippingCost, boxValue: _boxValue,
             state: BoxState.Assigned});
         sentMap[_senderAddr].push(newBox);
-        currentBoxID = currentBoxID +1;
-        boxes[currentBoxID] = newBox;              
+        boxes[currentBoxID] = newBox;
+        currentBoxID = currentBoxID +1;    
+    }
 
-        // here we also lock the money of the users and store them in our contract
+    function deliverBox(
+        uint256 _boxID
+        ) public view returns (uint256 _boxValue){
+        return boxes[_boxID].boxValue;
     }
 
     function getUserBox(address _senderAddr)  public view returns (Box[] memory ){
