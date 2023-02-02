@@ -72,17 +72,17 @@ async function deliverBox() {
 
   //save the form value
   let boxID = $('#boxID').val();
-  var boxValue;
-  contract.methods.deliverBox(boxID).send({
-    from: travellerAddress, to: contractAddress, gasLimit: 300000
-  }).then(function (result) {
+  let boxValue;
+  contract.methods.deliverBox(boxID).call((err, result) => {
     boxValue = result;
+    console.log("Res: " + result);
+    console.log("Box value: " + boxValue);
+    lockMoney(boxValue);
   })
 
-  console.log("Box value: " + boxValue);
+}
 
-  
-  // here we lock the money from the traveller
+async function lockMoney(boxValue){
   web3.eth.sendTransaction({ 
     from: travellerAddress,
     to: contractAddress, 
@@ -91,5 +91,5 @@ async function deliverBox() {
       if (!err)
         console.log(transactionHash + " success: box value locked."); 
     }
-  );
+  );  
 }
