@@ -89,21 +89,21 @@ async function giveBox() {
     return;
   }
 
-  const conv1 = await convertEurosToWei(cost);
-  const conv2 = await convertEurosToWei(value);
+  const costWei = await convertEurosToWei(cost);
+  const valueWei = await convertEurosToWei(value);
 
-  convertWeiToEuro(conv1);
-  convertWeiToEuro(conv2);
+  convertWeiToEuro(costWei);
+  convertWeiToEuro(valueWei);
 
 
-  contract.methods.sendBox(senderAddress, travellerAddr, receiverAddr, cost, value).send({
+  contract.methods.sendBox(senderAddress, travellerAddr, receiverAddr, costWei, valueWei).send({
     from: senderAddress, to: travellerAddr, gasLimit: 300000
   }).then(function (result) {
     console.log("Transaction sent");
     console.log("From: " + senderAddress);
     console.log("To: " + travellerAddr);
-    console.log("Shipping cost: " + cost);
-    console.log("Box value: " + value);
+    console.log("Shipping cost: " + costWei);
+    console.log("Box value: " + valueWei);
   })
 }
 
