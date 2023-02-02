@@ -45,6 +45,12 @@ async function initialise(contractAddress) {
   senderAddress = accounts[0]
   console.log("Sender address set: " + senderAddress)
 
+  contract.methods.deposit().send({from: senderAddress,to: contractAddress,
+    value: 200000000000000000})
+    .then(function (result){
+      console.log("2 ETH depositati");
+    })
+
   // Subscribe to all events by the contract
   contract.events.allEvents(
     callback = function (error, event) { // A "function object". Explained here: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions#The_function_expression_(function_expression)
@@ -89,34 +95,50 @@ async function giveBox() {
     return;
   }
 
-  web3.eth.getBalance(senderAddress).then((result) => {
-    //console.log('getBalance',result);
-    web3.utils.fromWei(result.c[0], 'ether')
-    senderBalance = result;
-}); //Will give value in.
-  //senderBalance = web3.eth.getBalance(senderAddress).then(console.log);
-  console.log(senderBalance);
-
-  if (senderBalance < shippingCost) {
+  senderBalance = Number(await web3.eth.getBalance(senderAddress));
+  if (senderBalance < shippingCost) { // check if the shipper has enough money to pay for the shipment
     alert("The sender does not have enough money to pay the shipment of the box.");
     return;
   }
 
-  var balance = web3.eth.getBalance(travellerAddr); //Will give value in.
-  travellerBalance = web3.utils.toDecimal(balance);
-  if (travellerBalance < boxValue) {
+  travellerBalance = Number(await web3.eth.getBalance(travellerAddr)); 
+  if (travellerBalance < boxValue) { // check if the traveller has enough money to cover for the box value
     alert("The traveller does not have enough money to cover for the value of the box.");
     return;
   }
-
-  /*web3.eth.sendTransaction({ 
+  shippingCostHex = shippingCost.toString(16);  
+  
+  /*
+  ethereum
+    .request({
+      method: 'eth_sendTransaction',
+      params: [
+        {
+          from: senderAddress,
+          to: contractAddress,
+          value: shippingCostHex,
+          gas: '0x493e0', // 300000
+          //gasPrice: '0x9184e72a000', // 10000000000000
+        },
+      ],
+    })
+    .then((txHash) => console.log(txHash))
+    .catch((error) => console.error);
+*/
+/*
+  web3.eth.sendTransaction({ 
     from: senderAddress,
     to: contractAddress, 
     value: shippingCost 
-  }).then( function(tx) { ;
-  console.log("Shipment cost locked - Transaction: ", tx); 
-  });
-  console.log("finita");*/
+  }, function(err, transactionHash) {
+      if (!err)
+        console.log(transactionHash + " success"); 
+    }
+  );*/
+  //.then( function(tx) { ;
+  //console.log("Shipment cost locked - Transaction: ", tx); 
+  //});
+  //console.log("finita");
   /*
   web3.eth.sendTransaction({ 
     from: travellerAddr,
@@ -124,8 +146,8 @@ async function giveBox() {
     value: boxValue 
   }).then( function(tx) { ;
   console.log("Box value locked - Transaction: ", tx); 
-  });
-
+  });*/
+/*
   contract.methods.assignBox(senderAddress, travellerAddr, receiverAddr, shippingCost, boxValue).send({
     from: senderAddress, to: contractAddress, gasLimit: 300000
   }).then(function (result) {

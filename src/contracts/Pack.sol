@@ -16,7 +16,7 @@ contract Pack{
     }
 
     constructor()  {
-        minter = payable(msg.sender);         // saving the contract address
+        minter = payable(msg.sender);         // saving the minter address
     }
 
     uint256 currentBoxID;
@@ -84,4 +84,6 @@ contract Pack{
     receive() external payable {
         emit Received(msg.sender, msg.value);
     }
+
+    fallback() external payable {}
 }
