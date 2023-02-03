@@ -9,7 +9,6 @@ var data;
 var eurRate;
 
 $(window).on('load', function () {
-    run();
     setConvVariables();
 });
 
@@ -17,6 +16,8 @@ async function setConvVariables() {
     response = await fetch('https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=BTC,USD,EUR');
     data = await response.json();
     eurRate = data.EUR;
+    console.log("ETH value", eurRate)
+    run();
 }
 
 
@@ -67,11 +68,11 @@ async function getUserBox() {
 
     var res = contract.methods.getUserBox(senderAddress.toString()).call((err, result) => {
         var shippingCard = ''
-
-        for (let i = 0; i < Object.values(result).length; i++) {
-            convertedShippingCost = convertWeiToEuro(result[i][4]).toFixed(2);
-            convertedBoxValue = convertWeiToEuro(result[i][5]).toFixed(2);
-            shippingCard += '<div class="card border-ligth mx-auto mb-3" style="max-width: 70%; text-alig: center">\
+        if (result && typeof result === 'object') {
+            for (let i = 0; i < Object.values(result).length; i++) {
+                convertedShippingCost = convertWeiToEuro(result[i][4]).toFixed(2);
+                convertedBoxValue = convertWeiToEuro(result[i][5]).toFixed(2);
+                shippingCard += '<div class="card border-ligth mx-auto mb-3" style="max-width: 70%; text-alig: center">\
                                     <div class="card-body">\
                                     <h2  class="card-title"><b>Shipping id: '+ result[i][0] + '</b><h2>\
                                         <p class="card-text" >\
@@ -82,8 +83,9 @@ async function getUserBox() {
                                         </p>\
                                         </div>\
                                     </div>';
+            }
+            $('#cards').append(shippingCard);
         }
-        $('#cards').append(shippingCard);
     })
 }
 
