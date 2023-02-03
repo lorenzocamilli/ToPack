@@ -89,17 +89,41 @@ async function giveBox() {
     return;
   }
 
-  contract.methods.sendBox(senderAddress, travellerAddr, receiverAddr, cost, value).send({
+  const costWei = await convertEurosToWei(cost);
+  const valueWei = await convertEurosToWei(value);
+
+  contract.methods.sendBox(senderAddress, travellerAddr, receiverAddr, costWei.toString(), valueWei.toString()).send({
     from: senderAddress, to: travellerAddr, gasLimit: 300000
   }).then(function (result) {
     console.log("Transaction sent");
     console.log("From: " + senderAddress);
     console.log("To: " + travellerAddr);
-    console.log("Shipping cost: " + cost);
-    console.log("Box value: " + value);
-
+    console.log("Shipping cost: " + costWei);
+    console.log("Box value: " + valueWei);
   })
 }
 
+async function convertEurosToWei(euros) {   //euros  ->  ether  ->  wei 
+  //const exchangeRateResponse = await fetch('https://min-api.cryptocompare.com/data/price?fsym=EUR&tsyms=ETH');
+  const exchangeRateResponse = await fetch('https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=BTC,USD,EUR');
+  const exchangeRateData = await exchangeRateResponse.json();
+  const exchangeRate = exchangeRateData.EUR;
+
+  const weiPerEther = 1000000000000000000;
+  const ether = euros / exchangeRate;
+  const wei = ether * weiPerEther;
+
+  console.log(`${euros} euros is equal to ${wei} wei.`);
+  //console.log(`${euros} euros is equal to ${ether} ETH.`);
+  return wei;
+}
 
 
+async function convertWeiToEuro(weiAmount) {
+  const response = await fetch('https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=BTC,USD,EUR');
+  const data = await response.json();
+  const eurRate = data.EUR;
+  const euroAmount = weiAmount * eurRate / 10**18;
+  console.log(`${weiAmount} weis is equal to ${euroAmount} euro.`);
+  return euroAmount;
+}
