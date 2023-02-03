@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.7.0 <0.9.0;
 
-
 contract Pack{
+
+    enum BoxState {Assigned, Delivered}
 
     struct Box {
         uint256 boxID;  
@@ -11,34 +12,76 @@ contract Pack{
         address receiverAddr;
         uint256 shippingCost;
         uint256 boxValue;
+        BoxState state;  
     }
 
+    constructor()  {
+        minter = payable(msg.sender);         // saving the minter address
+    }
 
     uint256 currentBoxID;
     mapping(address => Box[]) public sentMap; // each user has associated the ID of all the box sent
-    //mapping(address => uint256[]) public travellingMap; // each user has associated the IDs of all box he/she's trasferring
-    //mapping(address => uint256[]) public receivedMap; // each user has associated the IDs of all the box received
-    //mapping(address => uint256) public usersBalance; // map of balance of users
+    mapping (uint256 => Box) public boxes;    // map of all posts
+    address payable minter;                   // minter addr for the withdraw
 
+    // deposit ether inside the smart contract
+    function deposit() payable public {
+    }
 
-    function sendBox(
+    // withdraw the money back from the contract
+    function withdraw() public {
+        require(msg.sender == minter);
+        minter.transfer(address(this).balance);
+    }
+
+    function assignBox(
         address _senderAddr,
         address _travellerAddr,
         address _receiverAddr,
         uint256 _shippingCost,
         uint256 _boxValue
     ) public {
+        // CHECKS DONE IN WEB3
+        
         //give the box to the traveller: block money trasferring them to the contract, add the box to each user
         Box memory newBox = Box({boxID: currentBoxID, senderAddr: _senderAddr, 
-        travellerAddr: _travellerAddr, receiverAddr: _receiverAddr, shippingCost: _shippingCost, boxValue: _boxValue});
+            travellerAddr: _travellerAddr, receiverAddr: _receiverAddr, shippingCost: _shippingCost, boxValue: _boxValue,
+            state: BoxState.Assigned});
         sentMap[_senderAddr].push(newBox);
-        currentBoxID = currentBoxID +1;
- 
-       // addressesArray.push(_senderAddr);
+        boxes[currentBoxID] = newBox;
+        currentBoxID = currentBoxID +1;    
+    }
+
+    function deliverBox(
+        uint256 _boxID
+        ) public view returns (uint256 _boxValue){
+        return boxes[_boxID].boxValue;
     }
 
     function getUserBox(address _senderAddr)  public view returns (Box[] memory ){
         // get the list of posts created by the msg.sender
         return  sentMap[_senderAddr];
     }
+
+    function BoxDelivered(uint _boxID) public{
+        // pack has been delivered -> pay the traveller
+
+        // only the receiver can call this function to pay the traveller
+        require(msg.sender == boxes[_boxID].receiverAddr);
+
+        // paying the traveller from the smart contract, giving him back the boxValue too
+        payable(boxes[_boxID].travellerAddr).transfer(boxes[_boxID].shippingCost);  //  paying for the shipping
+        payable(boxes[_boxID].travellerAddr).transfer(boxes[_boxID].boxValue);      //  giving back the box value
+
+        // changing the post state to delivered
+        boxes[_boxID].state = BoxState.Delivered;
+    }
+
+    event Received(address, uint);
+
+    receive() external payable {
+        emit Received(msg.sender, msg.value);
+    }
+
+    fallback() external payable {}
 }
