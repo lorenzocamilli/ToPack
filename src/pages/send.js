@@ -92,8 +92,6 @@ async function giveBox() {
   const costWei = await convertEurosToWei(cost);
   const valueWei = await convertEurosToWei(value);
 
-
-
   contract.methods.sendBox(senderAddress, travellerAddr, receiverAddr, costWei.toString(), valueWei.toString()).send({
     from: senderAddress, to: travellerAddr, gasLimit: 300000
   }).then(function (result) {
