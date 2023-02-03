@@ -102,6 +102,35 @@ async function giveBox() {
     return;
   }
 
+  const costWei = await convertEurosToWei(cost);
+  const valueWei = await convertEurosToWei(value);
+
+  contract.methods.sendBox(senderAddress, travellerAddr, receiverAddr, costWei.toString(), valueWei.toString()).send({
+    from: senderAddress, to: travellerAddr, gasLimit: 300000
+  }).then(function (result) {
+    console.log("Transaction sent");
+    console.log("From: " + senderAddress);
+    console.log("To: " + travellerAddr);
+    console.log("Shipping cost: " + costWei);
+    console.log("Box value: " + valueWei);
+  })
+}
+
+async function convertEurosToWei(euros) {   //euros  ->  ether  ->  wei 
+  //const exchangeRateResponse = await fetch('https://min-api.cryptocompare.com/data/price?fsym=EUR&tsyms=ETH');
+  const exchangeRateResponse = await fetch('https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=BTC,USD,EUR');
+  const exchangeRateData = await exchangeRateResponse.json();
+  const exchangeRate = exchangeRateData.EUR;
+
+  const weiPerEther = 1000000000000000000;
+  const ether = euros / exchangeRate;
+  const wei = ether * weiPerEther;
+
+  console.log(`${euros} euros is equal to ${wei} wei.`);
+  //console.log(`${euros} euros is equal to ${ether} ETH.`);
+  return wei;
+}
+
   travellerBalance = Number(await web3.eth.getBalance(travellerAddr)); 
   if (travellerBalance < boxValue) { // check if the traveller has enough money to cover for the box value
     alert("The traveller does not have enough money to cover for the value of the box.");
@@ -130,4 +159,12 @@ async function giveBox() {
     console.log("Shipping cost: " + shippingCost);
     console.log("Box value: " + boxValue);
   })
+
+async function convertWeiToEuro(weiAmount) {
+  const response = await fetch('https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=BTC,USD,EUR');
+  const data = await response.json();
+  const eurRate = data.EUR;
+  const euroAmount = weiAmount * eurRate / 10**18;
+  console.log(`${weiAmount} weis is equal to ${euroAmount} euro.`);
+  return euroAmount;
 }

@@ -4,9 +4,12 @@
 node_modules/**
 /.pnp
 .pnp.js
+conf.js
 
 # production
+build/*
 build/**
+build/contracts/*
 contracts/artifacts/**
 
 
