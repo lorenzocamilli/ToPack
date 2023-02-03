@@ -8,8 +8,13 @@ var senderAddress = '0x0';
 // Set contract ABI and the contract
 var contract = null;
 
+var response;
+var data;
+var eurRate;
+
 $(window).on('load', function () {
   initialise(contractAddress);
+  setConvVariables();
 });
 
 // Asynchronous function (to work with modules loaded on the go)
@@ -44,13 +49,13 @@ async function initialise(contractAddress) {
   //console.log(accounts[0])
   senderAddress = accounts[0]
   console.log("Sender address set: " + senderAddress)
-/*
-  //deposit some money onto the contract
-  contract.methods.deposit().send({from: senderAddress,to: contractAddress,
-    value: 20000000000000000000})
-    .then(function (result){
-      console.log("20 ETH depositati");
-    })*/  
+  /*
+    //deposit some money onto the contract
+    contract.methods.deposit().send({from: senderAddress,to: contractAddress,
+      value: 20000000000000000000})
+      .then(function (result){
+        console.log("20 ETH depositati");
+      })*/
 
   // Subscribe to all events by the contract
   contract.events.allEvents(
@@ -79,8 +84,8 @@ async function giveBox() {
   //prendo le variabili dal form:
   var travellerAddr = $('#travellerAddr').val();
   var receiverAddr = $('#receiverAddr').val();
-  let shippingCost = $('#shipCost').val();
-  let boxValue = $('#boxValue').val();
+  let shippingCostEUR = $('#shipCost').val(); //val in euro
+  let boxValueEUR = $('#boxValue').val();
   //Controllo che gli address forniti in input siano diversi
   if (travellerAddr == receiverAddr) {
     alert("The two addresses must be different!");
@@ -96,75 +101,65 @@ async function giveBox() {
     return;
   }
 
+  let shippingCostWEI = convertEurosToWei(shippingCostEUR);
+  let boxValueWEI = convertEurosToWei(boxValueEUR);
+
   senderBalance = Number(await web3.eth.getBalance(senderAddress));
-  if (senderBalance < shippingCost) { // check if the shipper has enough money to pay for the shipment
+  if (senderBalance < shippingCostWEI) { // check if the shipper has enough money to pay for the shipment
     alert("The sender does not have enough money to pay the shipment of the box.");
     return;
   }
 
-  const costWei = await convertEurosToWei(cost);
-  const valueWei = await convertEurosToWei(value);
-
-  contract.methods.sendBox(senderAddress, travellerAddr, receiverAddr, costWei.toString(), valueWei.toString()).send({
-    from: senderAddress, to: travellerAddr, gasLimit: 300000
-  }).then(function (result) {
-    console.log("Transaction sent");
-    console.log("From: " + senderAddress);
-    console.log("To: " + travellerAddr);
-    console.log("Shipping cost: " + costWei);
-    console.log("Box value: " + valueWei);
-  })
-}
-
-async function convertEurosToWei(euros) {   //euros  ->  ether  ->  wei 
-  //const exchangeRateResponse = await fetch('https://min-api.cryptocompare.com/data/price?fsym=EUR&tsyms=ETH');
-  const exchangeRateResponse = await fetch('https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=BTC,USD,EUR');
-  const exchangeRateData = await exchangeRateResponse.json();
-  const exchangeRate = exchangeRateData.EUR;
-
-  const weiPerEther = 1000000000000000000;
-  const ether = euros / exchangeRate;
-  const wei = ether * weiPerEther;
-
-  console.log(`${euros} euros is equal to ${wei} wei.`);
-  //console.log(`${euros} euros is equal to ${ether} ETH.`);
-  return wei;
-}
-
-  travellerBalance = Number(await web3.eth.getBalance(travellerAddr)); 
-  if (travellerBalance < boxValue) { // check if the traveller has enough money to cover for the box value
+  travellerBalance = Number(await web3.eth.getBalance(travellerAddr));
+  if (travellerBalance < boxValueWEI) { // check if the traveller has enough money to cover for the box value
     alert("The traveller does not have enough money to cover for the value of the box.");
     return;
-  }  
+  }
 
-  
+
   // here we lock the money from the sender
-  web3.eth.sendTransaction({ 
+  web3.eth.sendTransaction({
     from: senderAddress,
-    to: contractAddress, 
-    value: shippingCost 
-  }, function(err, transactionHash) {
-      if (!err)
-        console.log(transactionHash + " success: shipping cost locked."); 
-    }
+    to: contractAddress,
+    value: shippingCostWEI
+  }, function (err, transactionHash) {
+    if (!err)
+      console.log(transactionHash + " success: shipping cost locked.");
+  }
   );
- 
-  contract.methods.assignBox(senderAddress, travellerAddr, receiverAddr, shippingCost, boxValue).send({
+
+  contract.methods.assignBox(senderAddress, travellerAddr, receiverAddr, shippingCostWEI.toString(), boxValueWEI.toString()).send({
     from: senderAddress, to: contractAddress, gasLimit: 300000
   }).then(function (result) {
     console.log("Box in shipment - Transaction: ");
     console.log("Sender: " + senderAddress);
     console.log("Traveller: " + travellerAddr);
     console.log("Receiver: " + receiverAddr)
-    console.log("Shipping cost: " + shippingCost);
-    console.log("Box value: " + boxValue);
-  })
+    console.log("Shipping cost: " + shippingCostWEI + " WEI");
+    console.log("(" + shippingCostEUR + " EUR)");
 
-async function convertWeiToEuro(weiAmount) {
-  const response = await fetch('https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=BTC,USD,EUR');
-  const data = await response.json();
-  const eurRate = data.EUR;
-  const euroAmount = weiAmount * eurRate / 10**18;
+    console.log("Box value: " + boxValueWEI + " WEI");
+    console.log("(" + boxValueEUR + " EUR)");
+  })
+}
+
+
+async function setConvVariables() {
+  response = await fetch('https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=BTC,USD,EUR');
+  data = await response.json();
+  eurRate = data.EUR;
+}
+
+function convertEurosToWei(euros) {
+  const ether = euros / eurRate;
+  const wei = ether * 10 ** 18;
+  console.log(`${euros} euros is equal to ${wei} wei.`);
+  return wei;
+}
+
+
+function convertWeiToEuro(weiAmount) {
+  const euroAmount = weiAmount * eurRate / 10 ** 18;
   console.log(`${weiAmount} weis is equal to ${euroAmount} euro.`);
   return euroAmount;
 }
