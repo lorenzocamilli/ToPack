@@ -1,7 +1,7 @@
 
 var contractAddress = exportContract();
 var contractJSON = exportAbi();
-var senderAddress = '0x0';
+var userAddress = '0x0';
 var contract = null;
 
 async function run() {
@@ -36,8 +36,8 @@ async function initialise(contractAddress, accounts) {
     console.error("No contract loaded.");
     return false;
   }
-  senderAddress = accounts[0]
-  console.log("Sender address set: " + senderAddress)
+  userAddress = accounts[0]
+  console.log("Sender address set: " + userAddress)
 
   contract.events.allEvents(
     callback = function (error, event) {

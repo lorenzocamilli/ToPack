@@ -2,7 +2,7 @@
 var contractAddress = exportContract();
 var contractJSON = "../" + exportAbi();
 console.log(contractJSON)
-var senderAddress = '0x0';
+var userAddress = '0x0';
 var contract;
 var response;
 var data;
@@ -16,7 +16,7 @@ async function setConvVariables() {
     response = await fetch('https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=BTC,USD,EUR');
     data = await response.json();
     eurRate = data.EUR;
-    console.log("ETH value", eurRate)
+ //   console.log("ETH value", eurRate)
     run();
 }
 
@@ -51,8 +51,8 @@ async function initialise(contractAddress, accounts) {
         console.error("No contract loaded.");
         return false;
     }
-    senderAddress = accounts[0]
-    console.log("Sender address set: " + senderAddress)
+    userAddress = accounts[0]
+    console.log("Sender address set: " + userAddress)
     var callback;
     contract.events.allEvents(
         callback = function (error, event) {
@@ -66,7 +66,7 @@ async function initialise(contractAddress, accounts) {
 
 async function getUserBox() {
 
-    var res = contract.methods.getUserBox(senderAddress.toString()).call((err, result) => {
+    var res = contract.methods.getUserBox(userAddress.toString()).call((err, result) => {
         var shippingCard = ''
         if (result && typeof result === 'object') {
             for (let i = 0; i < Object.values(result).length; i++) {
