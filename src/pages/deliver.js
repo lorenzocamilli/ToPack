@@ -4,7 +4,7 @@ var contractAddress = exportContract();
 // Set the relative URI of the contract’s skeleton (with ABI)
 var contractJSON = "../" + exportAbi();
 // Set the sending address
-var senderAddress = '0x0';
+var userAddress = '0x0';
 // Set contract ABI and the contract
 var contract = null;
 

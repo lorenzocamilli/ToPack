@@ -4,7 +4,7 @@ var contractAddress = exportContract();
 // Set the relative URI of the contract’s skeleton (with ABI)
 var contractJSON = "../" + exportAbi();
 // Set the sending address
-var senderAddress = '0x0';
+var userAddress = '0x0';
 // Set contract ABI and the contract
 var contract = null;
 
@@ -42,8 +42,8 @@ async function initialise(contractAddress) {
   // Set the address from which transactions are sent
   accounts = await web3.eth.getAccounts();
   //console.log(accounts[0])
-  receiverAddress = accounts[0]
-  console.log("Your address: " + receiverAddress) 
+  userAddress = accounts[0]
+  console.log("Your address: " + userAddress) 
 
   // Subscribe to all events by the contract
   contract.events.allEvents(
@@ -62,7 +62,7 @@ async function initialise(contractAddress) {
 //Displays the account address
 function showAccountAddr() {
   $("#myaccountaddress").html(
-    receiverAddress
+    userAddress
   );
   return false;
 }
@@ -74,7 +74,7 @@ async function endBox() {
   let boxID = $('#boxID').val();
 
   contract.methods.BoxDelivered(boxID).send({
-    from: receiverAddress, to: contractAddress, gasLimit: 300000
+    from: userAddress, to: contractAddress, gasLimit: 300000
   }).then(function (result) {
     console.log("Box " + boxID + "delivered - Transaction: success");
   })

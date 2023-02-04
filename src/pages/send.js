@@ -4,7 +4,7 @@ var contractAddress = exportContract();
 // Set the relative URI of the contract’s skeleton (with ABI)
 var contractJSON = "../" + exportAbi();
 // Set the sending address
-var senderAddress = '0x0';
+var userAddress = '0x0';
 // Set contract ABI and the contract
 var contract = null;
 
@@ -47,11 +47,11 @@ async function initialise(contractAddress) {
   // Set the address from which transactions are sent
   accounts = await web3.eth.getAccounts();
   //console.log(accounts[0])
-  senderAddress = accounts[0]
-  console.log("Sender address set: " + senderAddress)
+  userAddress = accounts[0]
+  console.log("Sender address set: " + userAddress)
   /*
     //deposit some money onto the contract
-    contract.methods.deposit().send({from: senderAddress,to: contractAddress,
+    contract.methods.deposit().send({from: userAddress,to: contractAddress,
       value: 20000000000000000000})
       .then(function (result){
         console.log("20 ETH depositati");
@@ -74,7 +74,7 @@ async function initialise(contractAddress) {
 //Displays the account address
 function showAccountAddr() {
   $("#myaccountaddress").html(
-    senderAddress
+    userAddress
   );
   return false;
 }
@@ -104,7 +104,7 @@ async function giveBox() {
   let shippingCostWEI = convertEurosToWei(shippingCostEUR);
   let boxValueWEI = convertEurosToWei(boxValueEUR);
 
-  senderBalance = Number(await web3.eth.getBalance(senderAddress));
+  senderBalance = Number(await web3.eth.getBalance(userAddress));
   if (senderBalance < shippingCostWEI) { // check if the shipper has enough money to pay for the shipment
     alert("The sender does not have enough money to pay the shipment of the box.");
     return;
@@ -119,7 +119,7 @@ async function giveBox() {
 
   // here we lock the money from the sender
   web3.eth.sendTransaction({
-    from: senderAddress,
+    from: userAddress,
     to: contractAddress,
     value: shippingCostWEI
   }, function (err, transactionHash) {
@@ -128,11 +128,11 @@ async function giveBox() {
   }
   );
 
-  contract.methods.assignBox(senderAddress, travellerAddr, receiverAddr, shippingCostWEI.toString(), boxValueWEI.toString()).send({
-    from: senderAddress, to: contractAddress, gasLimit: 300000
+  contract.methods.assignBox(userAddress, travellerAddr, receiverAddr, shippingCostWEI.toString(), boxValueWEI.toString()).send({
+    from: userAddress, to: contractAddress, gasLimit: 300000
   }).then(function (result) {
     console.log("Box in shipment - Transaction: ");
-    console.log("Sender: " + senderAddress);
+    console.log("Sender: " + userAddress);
     console.log("Traveller: " + travellerAddr);
     console.log("Receiver: " + receiverAddr)
     console.log("Shipping cost: " + shippingCostWEI + " WEI");
