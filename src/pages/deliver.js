@@ -10,7 +10,6 @@ var eurRate;
 
 $(window).on('load', function () {
   initialise(contractAddress);
-  setConvVariables();
 });
 
 async function initialise(contractAddress) {
