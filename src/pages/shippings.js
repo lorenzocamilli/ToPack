@@ -16,7 +16,6 @@ async function setConvVariables() {
     response = await fetch('https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=BTC,USD,EUR');
     data = await response.json();
     eurRate = data.EUR;
- //   console.log("ETH value", eurRate)
     run();
 }
 
