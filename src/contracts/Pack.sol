@@ -74,8 +74,36 @@ contract Pack{
         payable(boxes[_boxID].travellerAddr).transfer(boxes[_boxID].boxValue);      //  giving back the box value
 
         // changing the post state to delivered
-        boxes[_boxID].state = BoxState.Delivered;
-    }
+           // changing the post state to delivered
+           boxes[_boxID].state = BoxState.Delivered;
+           address sender = boxes[_boxID].senderAddr;
+           burn(sender, _boxID);
+       }
+   
+       function burn(address user, uint256 _boxID) private {
+           if (user == boxes[_boxID].senderAddr) {
+               if (_boxID == (sentMap[user][(sentMap[user]).length - 1].boxID)) {
+                   sentMap[user].pop();
+               }
+               // if _boxID is the ID of the first (and only) post in the array
+               else if (
+                   (sentMap[user]).length == 1 && _boxID == sentMap[user][0].boxID
+               ) {
+                   sentMap[user].pop();
+               } else if ((sentMap[user]).length != 1) {
+                   for (uint256 i = 0; i < (sentMap[user]).length; i++) {
+                       if (_boxID == sentMap[user][i].boxID) {
+                           sentMap[user][i] = sentMap[user][
+                               (sentMap[user]).length - 1
+                           ];
+                           sentMap[user].pop();
+                           break;
+                       }
+                   }
+               }
+           } 
+       }
+   
 
     event Received(address, uint);
 
@@ -85,3 +113,56 @@ contract Pack{
 
     fallback() external payable {}
 }
+
+
+/*      // changing the post state to delivered
+        boxes[_boxID].state = BoxState.Delivered;
+        address sender = boxes[_boxID].senderAddr;
+        burn(sender, _boxID);
+    }
+
+    function burn(address user, uint256 _boxID) private {
+        if (user == boxes[_boxID].senderAddr) {
+            if (_boxID == (sentMap[user][(sentMap[user]).length - 1].boxID)) {
+                sentMap[user].pop();
+            }
+            // if _boxID is the ID of the first (and only) post in the array
+            else if (
+                (sentMap[user]).length == 1 && _boxID == sentMap[user][0].boxID
+            ) {
+                sentMap[user].pop();
+            } else if ((sentMap[user]).length != 1) {
+                for (uint256 i = 0; i < (sentMap[user]).length; i++) {
+                    if (_boxID == sentMap[user][i].boxID) {
+                        sentMap[user][i] = sentMap[user][
+                            (sentMap[user]).length - 1
+                        ];
+                        sentMap[user].pop();
+                        break;
+                    }
+                }
+            }
+        } else if (user == boxes[_boxID].travellerAddr) {
+            if (
+                _boxID == (travelMap[user][(travelMap[user]).length - 1].boxID)
+            ) {
+                travelMap[user].pop();
+            } else if (
+                (travelMap[user]).length == 1 &&
+                _boxID == travelMap[user][0].boxID
+            ) {
+                travelMap[user].pop();
+            } else if ((travelMap[user]).length != 1) {
+                for (uint256 i = 0; i < (travelMap[user]).length; i++) {
+                    if (_boxID == travelMap[user][i].boxID) {
+                        travelMap[user][i] = travelMap[user][
+                            (travelMap[user]).length - 1
+                        ];
+                        travelMap[user].pop();
+                        break;
+                    }
+                }
+            }
+        }
+    }
+*/
