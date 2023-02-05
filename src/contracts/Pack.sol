@@ -3,8 +3,6 @@ pragma solidity >=0.7.0 <0.9.0;
 
 contract Pack{
 
-    enum BoxState {Assigned, Delivered}
-
     struct Box {
         uint256 boxID;  
         address senderAddr; 
@@ -12,7 +10,6 @@ contract Pack{
         address receiverAddr;
         uint256 shippingCost;
         uint256 boxValue;
-        BoxState state;  
     }
 
     constructor()  {
@@ -21,6 +18,7 @@ contract Pack{
 
     uint256 currentBoxID;
     mapping(address => Box[]) public sentMap; // each user has associated the ID of all the box sent
+    mapping(address => Box[]) public travelMap; // each user has associated the ID of all the box sent
     mapping (uint256 => Box) public boxes;    // map of all posts
     address payable minter;                   // minter addr for the withdraw
 
@@ -45,9 +43,9 @@ contract Pack{
         
         //give the box to the traveller: block money trasferring them to the contract, add the box to each user
         Box memory newBox = Box({boxID: currentBoxID, senderAddr: _senderAddr, 
-            travellerAddr: _travellerAddr, receiverAddr: _receiverAddr, shippingCost: _shippingCost, boxValue: _boxValue,
-            state: BoxState.Assigned});
+            travellerAddr: _travellerAddr, receiverAddr: _receiverAddr, shippingCost: _shippingCost, boxValue: _boxValue});
         sentMap[_senderAddr].push(newBox);
+        travelMap[_travellerAddr].push(newBox);
         boxes[currentBoxID] = newBox;
         currentBoxID = currentBoxID +1;    
     }
@@ -75,53 +73,20 @@ contract Pack{
 
         // changing the post state to delivered
            // changing the post state to delivered
-           boxes[_boxID].state = BoxState.Delivered;
            address sender = boxes[_boxID].senderAddr;
+           address traveller = boxes[_boxID].travellerAddr;
+
+           for (uint i = 0; i < currentBoxID; i ++){
+            if(_boxID==boxes[i]){
+                delete boxes[i];
+                break;
+            }
+        }
+        
            burn(sender, _boxID);
        }
    
        function burn(address user, uint256 _boxID) private {
-           if (user == boxes[_boxID].senderAddr) {
-               if (_boxID == (sentMap[user][(sentMap[user]).length - 1].boxID)) {
-                   sentMap[user].pop();
-               }
-               // if _boxID is the ID of the first (and only) post in the array
-               else if (
-                   (sentMap[user]).length == 1 && _boxID == sentMap[user][0].boxID
-               ) {
-                   sentMap[user].pop();
-               } else if ((sentMap[user]).length != 1) {
-                   for (uint256 i = 0; i < (sentMap[user]).length; i++) {
-                       if (_boxID == sentMap[user][i].boxID) {
-                           sentMap[user][i] = sentMap[user][
-                               (sentMap[user]).length - 1
-                           ];
-                           sentMap[user].pop();
-                           break;
-                       }
-                   }
-               }
-           } 
-       }
-   
-
-    event Received(address, uint);
-
-    receive() external payable {
-        emit Received(msg.sender, msg.value);
-    }
-
-    fallback() external payable {}
-}
-
-
-/*      // changing the post state to delivered
-        boxes[_boxID].state = BoxState.Delivered;
-        address sender = boxes[_boxID].senderAddr;
-        burn(sender, _boxID);
-    }
-
-    function burn(address user, uint256 _boxID) private {
         if (user == boxes[_boxID].senderAddr) {
             if (_boxID == (sentMap[user][(sentMap[user]).length - 1].boxID)) {
                 sentMap[user].pop();
@@ -162,6 +127,75 @@ contract Pack{
                         break;
                     }
                 }
+            }
+        }
+       
+    }
+   
+
+    event Received(address, uint);
+
+    receive() external payable {
+        emit Received(msg.sender, msg.value);
+    }
+
+    fallback() external payable {}
+}
+
+
+/*      // changing the post state to delivered
+        boxes[_boxID].state = BoxState.Delivered;
+        address sender = boxes[_boxID].senderAddr;
+        burn(sender, _boxID);
+    }
+
+    function burn(address user, uint256 _boxID) private {
+           if (user == boxes[_boxID].senderAddr) {
+            if (_boxID == (sentMap[user][(sentMap[user]).length - 1].boxID)) {
+                sentMap[user].pop();
+            }
+            // if _boxID is the ID of the first (and only) post in the array
+            else if (
+                (sentMap[user]).length == 1 && _boxID == sentMap[user][0].boxID
+            ) {
+                sentMap[user].pop();
+            } else if ((sentMap[user]).length != 1) {
+                for (uint256 i = 0; i < (sentMap[user]).length; i++) {
+                    if (_boxID == sentMap[user][i].boxID) {
+                        sentMap[user][i] = sentMap[user][
+                            (sentMap[user]).length - 1
+                        ];
+                        sentMap[user].pop();
+                        break;
+                    }
+                }
+            }
+        } else if (user == boxes[_boxID].travellerAddr) {
+            if (
+                _boxID == (travelMap[user][(travelMap[user]).length - 1].boxID)
+            ) {
+                travelMap[user].pop();
+            } else if (
+                (travelMap[user]).length == 1 &&
+                _boxID == travelMap[user][0].boxID
+            ) {
+                travelMap[user].pop();
+            } else if ((travelMap[user]).length != 1) {
+                for (uint256 i = 0; i < (travelMap[user]).length; i++) {
+                    if (_boxID == travelMap[user][i].boxID) {
+                        travelMap[user][i] = travelMap[user][
+                            (travelMap[user]).length - 1
+                        ];
+                        travelMap[user].pop();
+                        break;
+                    }
+                }
+            }
+        }
+        for (uint i = 0; i < currentBoxID; i ++){
+            if(_boxID==boxes[i]){
+                delete boxes[i];
+                break;
             }
         }
     }
