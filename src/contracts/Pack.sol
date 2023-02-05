@@ -83,13 +83,15 @@ contract Pack{
            address traveller = boxes[_boxID].travellerAddr;
 
            for (uint i = 0; i < currentBoxID; i ++){
-            if(_boxID==boxes[i]){
+            if(_boxID==boxes[i].boxID){
                 delete boxes[i];
                 break;
             }
         }
 
            burn(sender, _boxID);
+           burn(traveller, _boxID);
+
        }
    
        function burn(address user, uint256 _boxID) private {
