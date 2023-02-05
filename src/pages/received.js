@@ -59,7 +59,7 @@ async function endBox() {
   //save the form value
   let boxID = $('#boxID').val();
 
-  contract.methods.BoxDelivered(boxID).send({
+  contract.methods.BoxDelivered(boxID.toString()).send({
     from: userAddress, to: contractAddress, gasLimit: 300000
   }).then(function (result) {
     console.log("Box " + boxID + "delivered - Transaction: success");

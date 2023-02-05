@@ -64,8 +64,12 @@ async function initialise(contractAddress, accounts) {
 }
 
 async function getUserBox() {
-
+console.log("entrato nella funzione")
     var res = contract.methods.getUserBox(userAddress.toString()).call((err, result) => {
+        console.log("chiamata blockchian")
+        console.log("Res", res)
+        console.log("Result", result)
+
         var shippingCard = ''
         if (result && typeof result === 'object') {
             for (let i = 0; i < Object.values(result).length; i++) {
