@@ -6,12 +6,18 @@ var data;
 var eurRate;
 
 $(window).on('load', function () {
-    setConvVariables();
+    first();
 });
-
+function first(){
+    run()
+    setTimeout(function(){
+        userAddress = exportUserAddr();
+        contract = exportContract();
+        setConvVariables();
+    }, 500 );
+}
 async function upload() {
-    userAddress = exportUserAddr();
-    contract = exportContract();
+
     console.log("User addres", userAddress)
     console.log("Contract", contract)
     getUserBox()
