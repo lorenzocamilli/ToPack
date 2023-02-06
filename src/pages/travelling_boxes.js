@@ -68,10 +68,13 @@ async function getUserBox() {
     var res = contract.methods.getTravellerBoxes(userAddress.toString()).call((err, result) => {
         var shippingCard = ''
         if (result && typeof result === 'object') {
-            for (let i = 0; i < Object.values(result).length; i++) {
-                convertedShippingCost = convertWeiToEuro(result[i][4]).toFixed(2);
-                convertedBoxValue = convertWeiToEuro(result[i][5]).toFixed(2);
-                shippingCard += '<div class="card border-ligth mx-auto mb-3" style="max-width: 70%; text-alig: center">\
+            if (Object.values(result).length == 0) {
+                shippingCard = '<h1 style="text-align:center;"> You don\'t have any boxes yet </h1>'
+            } else {
+                for (let i = 0; i < Object.values(result).length; i++) {
+                    convertedShippingCost = convertWeiToEuro(result[i][4]).toFixed(2);
+                    convertedBoxValue = convertWeiToEuro(result[i][5]).toFixed(2);
+                    shippingCard += '<div class="card border-ligth mx-auto mb-3" style="max-width: 70%; text-alig: center">\
                                     <div class="card-body">\
                                     <h2  class="card-title"><b>Shipping id: '+ result[i][0] + '</b><h2>\
                                         <p class="card-text" >\
@@ -82,6 +85,7 @@ async function getUserBox() {
                                         </p>\
                                         </div>\
                                     </div>';
+                }
             }
             $('#cards').append(shippingCard);
         }
