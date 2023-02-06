@@ -5,7 +5,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.2.7/web3.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mocha/1.0.2/package/lib/browser/fs.js"></script>
     <script src="../conf.js"></script>
-    <script src="delivered.js"></script>
+    <script src="travelling_boxes.js"></script>
 <meta charset="utf-8">
 
 <head>
@@ -35,45 +35,9 @@
 <body>
     <div class="container-fluid my-5 ">
 
-        <header>
-			<div>
-				<h1>Confirm you received your pack</h1>
-			</div>
-		</header>
-
-        <section id="deliverTX">
-			<div>
-				<p> Receiver address (you):
-					<code id="myaccountaddress">Address not loaded</code>
-					<!-- see the JS function displayAccountAddress() -->
-				</p>
-			</div>
-
-			<form onsubmit="endBox(); return false;">
-				<div class="mx-auto mb-3 mt-10 " style="width: 50%">
-					<div>
-						<div class="row mb-3">
-							<div class="col">
-								<label for="boxID">Box ID</label>
-								<input style="width: 100%" type="number" class="form-control" id="boxID" inputmode="numeric" required>
-							<div id="boxID help" class="form-text">(Insert the ID of the box you just received)</div>
-							</div>
-						</div>
-					</div>
-
-					<div>
-						<div class="row">
-							<div class="col-md-3 offset-md-9">
-								<button type="submit" class="btn btn-primary" style="width: 100%">Pack delivered</button>
-							</div>
-						</div>
-					</div>
-
-				</div>
-			</form>
-
-		</section>
-
+        <div id="cards">
+            <!-- Dinamically insert cards with shippings of the useer-->
+        </div>
     </div>
 </body>
 </html>
