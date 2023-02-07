@@ -86,7 +86,7 @@ async function setConvVariables() {
 function convertWeiToEuro(weiAmount) {
     EUROAMOUNT = weiAmount * EURRATE / 10 ** 18;
     console.log(`${weiAmount} weis is equal to ${EUROAMOUNT} euro.`);
-    return EUROAMOUNT;
+    return Math.ceil(EUROAMOUNT);
 }
 
 
@@ -94,5 +94,5 @@ function convertEurosToWei(euros) {
     const ether = euros / EURRATE;
     WEI = ether * 10 ** 18;
     console.log(`${euros} euros is equal to ${WEI} WEI.`);
-    return WEI;
+    return Math.round(WEI);
 }
