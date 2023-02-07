@@ -25,8 +25,8 @@ function getUserBox() {
                 shippingCard = '<h1 style="text-align:center;"> You don\'t have any boxes yet </h1>'
             } else {
                 for (let i = 0; i < Object.values(result).length; i++) {
-                    convertedShippingCost = convertWeiToEuro(result[i][4]).toFixed(2);
-                    convertedBoxValue = convertWeiToEuro(result[i][5]).toFixed(2);
+                    convertedShippingCost = convertWeiToEuro(result[i][4]);
+                    convertedBoxValue = convertWeiToEuro(result[i][5]);
                     shippingCard += '<div class="card border-ligth mx-auto mb-3" style="max-width: 70%; text-alig: center">\
                                     <div class="card-body">\
                                     <h2  class="card-title"><b>Shipping id: '+ result[i][0] + '</b><h2>\

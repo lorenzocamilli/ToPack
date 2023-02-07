@@ -22,16 +22,6 @@ contract Pack{
     mapping (uint256 => Box) public boxes;    // map of all posts
     address payable minter;                   // minter addr for the withdraw
 
-    // deposit ether inside the smart contract
-    function deposit() payable public {
-    }
-
-    // withdraw the money back from the contract
-    function withdraw() public {
-        require(msg.sender == minter);
-        minter.transfer(address(this).balance);
-    }
-
     function assignBox(
         address _senderAddr,
         address _travellerAddr,
@@ -79,12 +69,8 @@ contract Pack{
         // changing the post state to delivered
            // changing the post state to delivered
            address sender = boxes[_boxID].senderAddr;
-           address traveller = boxes[_boxID].travellerAddr;
-
-
-        
+           address traveller = boxes[_boxID].travellerAddr;      
            burn(sender,traveller, _boxID);
-
        }
    
        function burn(address sender, address traveller, uint256 _boxID) private {
@@ -139,12 +125,9 @@ contract Pack{
         }
     }
    
-
     event Received(address, uint);
 
     receive() external payable {
         emit Received(msg.sender, msg.value);
     }
-
-    fallback() external payable {}
 }

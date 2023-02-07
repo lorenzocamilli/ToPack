@@ -22,6 +22,11 @@ async function giveBox() {
   let shippingCostEUR = $('#shipCost').val(); //val in euro
   let boxValueEUR = $('#boxValue').val();
   //Controllo che gli address forniti in input siano diversi
+  if (userAddress == receiverAddr || userAddress == travellerAddr) {
+    alert("You can not be involved as traveller or receiver!");
+    return;
+  }
+
   if (travellerAddr == receiverAddr) {
     alert("The two addresses must be different!");
     return;
@@ -50,7 +55,6 @@ async function giveBox() {
     alert("The traveller does not have enough money to cover for the value of the box.");
     return;
   }
-
 
   // here we lock the money from the sender
   web3.eth.sendTransaction({
