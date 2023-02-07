@@ -14,10 +14,12 @@ Any step is guaranteed by the blockchain.
 - [Metmask](https://metamask.io/download/) extension
 
 ## Run the project
-1. Open ganache
-2. Compile the contracts using `truffle compile`
-3. Deploy the contracts using `truffle deploy`
+1. Open Ganache.
+2. Compile the contracts using `truffle compile` (run it in `src/` directory).
+3. Deploy the contracts using `truffle deploy`.
 4. Change the contract address in `pages/config.js` with the one in ganache
-5. Create a local server with ` http-server http://localhost:8080` or any alternative such as python
-
+5. Create a local server with ` http-server http://localhost:8080` or any alternative such as python (`python -m http.server`).
+6. Connect Metamask to Ganache chain.
+7. Add accounts in Metamask (importing the private keys), we suggest to use 3 different accounts (one for the sender, one for the traveller and the last for the receiver).
+8. Try it. The sender is that one that create the post in `pages/send.html` page, then the traveller confirm that it has received the box inserting the id (in `pages/deliver.js`) of the shipping created by the sender, and accept the transaction to block the box value amount, this is important to avoid that the travelelr lose and stole the box, if the box it's correctly received it will receive back the money. Finally the receiver insert the id of the box (in `/pages/received.html`) when it receive the box, at this point the contract unlock the money: the box value will give back to the travller and use the shipping cost to pay the work of the traveller.
 
