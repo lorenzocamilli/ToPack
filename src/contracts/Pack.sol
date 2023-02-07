@@ -58,7 +58,7 @@ contract Pack{
     @param _boxID ID that refers to the shipping
     @return _boxValue Value of the pack of the shipping
     */
-    function deliverBox(
+    function getBoxValue(
         uint256 _boxID
         ) public view returns (uint256 _boxValue){
         return boxes[_boxID].boxValue;

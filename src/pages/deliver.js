@@ -22,7 +22,7 @@ async function deliverBox() {
   //save the form value
   let boxID = $('#boxID').val();
   let boxValue;
-  contract.methods.deliverBox(boxID).call((err, result) => {
+  contract.methods.getBoxValue(boxID).call((err, result) => {
     boxValue = result;
     console.log("Res: " + result);
     console.log("Box value: " + boxValue);
