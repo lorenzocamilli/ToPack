@@ -88,7 +88,7 @@ contract Pack{
     @notice Unlock the money that has been sent to the contract and pay the traveller
     @param _boxID ID that refers to the shipping
     */
-    function boxDelivered(uint _boxID) public{
+    function boxReceived(uint _boxID) public{
         // only the receiver can call this function to pay the traveller
         require(msg.sender == boxes[_boxID].receiverAddr);
 
