@@ -15,7 +15,7 @@ function start(){
 }
 
 function getUserBox() {   
-    var res = contract.methods.getUserBox(userAddress.toString()).call({
+    var res = contract.methods.getSenderBoxes(userAddress.toString()).call({
         from: userAddress, gasLimit: 3000000
     }).then(function (result) {
         console.log("Result", result)

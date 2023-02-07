@@ -69,7 +69,7 @@ contract Pack{
     @param _senderAddr Address of the user
     @return se Shippings as a sender
      */
-    function getUserBox(address _senderAddr)  public view returns (Box[] memory se){
+    function getSenderBoxes(address _senderAddr)  public view returns (Box[] memory se){
         // get the list of posts created by the msg.sender
         return  sentMap[_senderAddr];
     }
