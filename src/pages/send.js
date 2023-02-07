@@ -1,56 +1,18 @@
-$("form").submit(function (e) { e.preventDefault(); });
-
-var contractAddress = exportContract();
-var contractJSON = "../" + exportAbi();
-var userAddress = '0x0';
-var contract = null;
-var response;
-var data;
-var eurRate;
+var userAddress
+var contract
+var contractAddress
 
 $(window).on('load', function () {
-  initialise(contractAddress);
-  setConvVariables();
+  start();
 });
 
-async function initialise(contractAddress) {
-  if (typeof web3 !== 'undefined') {
-    web3 = new Web3(web3.currentProvider);
-  } else {
-    web3 = new Web3(new Web3.providers.WebsocketProvider("ws://localhost:7545"));
-  }
-
- await $.getJSON(contractJSON,
-    function (contractData) { 
-      contract = new web3.eth.Contract(contractData.abi, contractAddress);
-    }
-  ).catch((error) => { console.error(error); });
-
-  if (!contract) {
-    console.error("No contract loaded.");
-    return false;
-  }
-
-  accounts = await web3.eth.getAccounts();
-  userAddress = accounts[0]
-  console.log("Sender address set: " + userAddress)
- 
-  contract.events.allEvents(
-    callback = function (error, event) { // A "function object". Explained here: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions#The_function_expression_(function_expression)
-      if (error) {
-        console.error(error)
-      }
-      console.log(event);
-    });
-
-  await showAccountAddr();
-}
-
-function showAccountAddr() {
-  $("#myaccountaddress").html(
-    userAddress
-  );
-  return false;
+function start() {
+  run()
+  setTimeout(function () {
+    userAddress = exportUserAddr();
+    contractAddress = exportContractAddr();
+    contract = exportContract();
+  }, 500);
 }
 
 async function giveBox() {
@@ -60,6 +22,11 @@ async function giveBox() {
   let shippingCostEUR = $('#shipCost').val(); //val in euro
   let boxValueEUR = $('#boxValue').val();
   //Controllo che gli address forniti in input siano diversi
+  if (userAddress == receiverAddr || userAddress == travellerAddr) {
+    alert("You can not be involved as traveller or receiver!");
+    return;
+  }
+
   if (travellerAddr == receiverAddr) {
     alert("The two addresses must be different!");
     return;
@@ -89,7 +56,6 @@ async function giveBox() {
     return;
   }
 
-
   // here we lock the money from the sender
   web3.eth.sendTransaction({
     from: userAddress,
@@ -115,23 +81,3 @@ async function giveBox() {
   })
 }
 
-
-async function setConvVariables() {
-  response = await fetch('https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=BTC,USD,EUR');
-  data = await response.json();
-  eurRate = data.EUR;
-}
-
-function convertEurosToWei(euros) {
-  const ether = euros / eurRate;
-  const wei = ether * 10 ** 18;
-  console.log(`${euros} euros is equal to ${wei} wei.`);
-  return wei;
-}
-
-
-function convertWeiToEuro(weiAmount) {
-  const euroAmount = weiAmount * eurRate / 10 ** 18;
-  console.log(`${weiAmount} weis is equal to ${euroAmount} euro.`);
-  return euroAmount;
-}

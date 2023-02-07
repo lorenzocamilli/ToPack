@@ -1,71 +1,21 @@
-
-var contractAddress = exportContract();
-var contractJSON = "../" + exportAbi();
-console.log(contractJSON)
-var userAddress = '0x0';
+var userAddress;
 var contract;
-var response;
-var data;
-var eurRate;
 
 $(window).on('load', function () {
-    setConvVariables();
+    start();
 });
 
-async function setConvVariables() {
-    response = await fetch('https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=BTC,USD,EUR');
-    data = await response.json();
-    eurRate = data.EUR;
-    run();
-}
-
-
-async function run() {
-    if (typeof window.ethereum !== 'undefined') {
-        console.log('MetaMask is installed!');
-    }
-
-    await window.ethereum.enable();
-
-    const accounts = await ethereum.request({
-        method: 'eth_requestAccounts',
-    });
-    initialise(contractAddress, accounts)
-}
-
-async function initialise(contractAddress, accounts) {
-    if (typeof web3 !== 'undefined') {
-        web3 = new Web3(web3.currentProvider);
-    } else {
-        web3 = new Web3(new Web3.providers.WebsocketProvider("ws://localhost:7545"));
-    }
-
-    await $.getJSON(contractJSON,
-        function (contractData) {
-            contract = new web3.eth.Contract(contractData.abi, contractAddress);
-        }
-    ).catch((error) => { console.error(error); });
-
-    if (!contract) {
-        console.error("No contract loaded.");
-        return false;
-    }
-    userAddress = accounts[0]
-    console.log("Sender address set: " + userAddress)
-    var callback;
-    contract.events.allEvents(
-        callback = function (error, event) {
-            if (error) {
-                console.error(error)
-            }
-            console.log(event);
-        });
-    getUserBox()
+function start(){
+    run()
+    setTimeout(function(){
+        userAddress = exportUserAddr();
+        contract = exportContract();
+        getUserBox();
+    }, 500 );
 }
 
 async function getUserBox() {
-
-    var res = contract.methods.getTravellerBoxes(userAddress.toString()).call((err, result) => {
+     var res = contract.methods.getTravellerBoxes(userAddress.toString()).call((err, result) => {
         var shippingCard = ''
         if (result && typeof result === 'object') {
             if (Object.values(result).length == 0) {
@@ -90,11 +40,4 @@ async function getUserBox() {
             $('#cards').append(shippingCard);
         }
     })
-}
-
-
-function convertWeiToEuro(weiAmount) {
-    const euroAmount = weiAmount * eurRate / 10 ** 18;
-    console.log(`${weiAmount} weis is equal to ${euroAmount} euro.`);
-    return euroAmount;
 }
