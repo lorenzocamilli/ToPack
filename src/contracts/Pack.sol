@@ -1,8 +1,14 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.7.0 <0.9.0;
 
+/**
+@title ToPack - The new era of private, secure, and fast delivery
+@dev Makes sure the payment takes place once the pack has been delivered
+ */
+
 contract Pack{
 
+    /// @notice Structure of each shipping
     struct Box {
         uint256 boxID;  
         address senderAddr; 
@@ -40,12 +46,24 @@ contract Pack{
         currentBoxID = currentBoxID +1;    
     }
 
+    /**
+    @notice Inform of the value of a pack
+    @param _boxID ID that refers to the shipping
+    @return _boxValue Value of the pack of the shipping
+     */
     function deliverBox(
         uint256 _boxID
         ) public view returns (uint256 _boxValue){
         return boxes[_boxID].boxValue;
     }
 
+    /**
+    @notice List all the shippings assigned to a specific user
+    @param _userAddr Address of the user
+    @return se Shippings as a sender
+    @return tr Shippings as a traveller
+    @return re Shippings as a receiver
+     */
     function getUserBox(address _senderAddr)  public view returns (Box[] memory ){
         // get the list of posts created by the msg.sender
         return  sentMap[_senderAddr];
@@ -56,7 +74,11 @@ contract Pack{
         return  travelMap[_travellerAddr];
     }
 
-    function BoxDelivered(uint _boxID) public{
+    /**
+    @notice Unlock the money that has been sent to the contract and pay the traveller
+    @param _boxID ID that refers to the shipping
+    */
+    function boxDelivered(uint _boxID) public{
         // pack has been delivered -> pay the traveller
 
         // only the receiver can call this function to pay the traveller
@@ -67,23 +89,30 @@ contract Pack{
         payable(boxes[_boxID].travellerAddr).transfer(boxes[_boxID].boxValue);      //  giving back the box value
 
         // changing the post state to delivered
-           // changing the post state to delivered
-           address sender = boxes[_boxID].senderAddr;
-           address traveller = boxes[_boxID].travellerAddr;      
-           burn(sender,traveller, _boxID);
-       }
-   
-       function burn(address sender, address traveller, uint256 _boxID) private {
+        // changing the post state to delivered
+        address sender = boxes[_boxID].senderAddr;
+        address traveller = boxes[_boxID].travellerAddr;      
+        burn(sender,traveller, _boxID);
+    }
+
+    /**
+    @notice Burn the non-fungible tokens created for this pack
+    @param _boxID ID that refers to the shipping
+    */
+    function burn(address sender, address traveller, uint256 _boxID) private {
+        // delete the box from the sender array
+        // if the _boxID is the ID of the last item in the map, just pop it
         if (sender == boxes[_boxID].senderAddr) {
             if (_boxID == (sentMap[sender][(sentMap[sender]).length - 1].boxID)) {
                 sentMap[sender].pop();
             }
-            // if _boxID is the ID of the first (and only) post in the array
+            // if _boxID is the ID of the first (and the only) box in the array
             else if (
                 (sentMap[sender]).length == 1 && _boxID == sentMap[sender][0].boxID
             ) {
                 sentMap[sender].pop();
             } else if ((sentMap[sender]).length != 1) {
+                // move the element as last element of the array and then delete it
                 for (uint256 i = 0; i < (sentMap[sender]).length; i++) {
                     if (_boxID == sentMap[sender][i].boxID) {
                         sentMap[sender][i] = sentMap[sender][
@@ -95,6 +124,7 @@ contract Pack{
                 }
             }
         }
+        // delete the box from the travelelr map
         if (traveller == boxes[_boxID].travellerAddr) {
             if (
                 _boxID == (travelMap[traveller][(travelMap[traveller]).length - 1].boxID)
@@ -117,6 +147,7 @@ contract Pack{
                 }
             }
         }
+        // delete the element form the map of the boxes
         for (uint i = 0; i < currentBoxID; i ++){
             if(_boxID==boxes[i].boxID){
                 delete boxes[i];
@@ -124,6 +155,7 @@ contract Pack{
             }
         }
     }
+
    
     event Received(address, uint);
 
