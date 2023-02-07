@@ -22,6 +22,14 @@ function exportUserAddr() {
     return USERADDR;
 }
 
+function showAccountAddr() {
+console.log("acc", USERADDR)
+    $("#userAddress").html(
+        USERADDR
+    );
+    return false;
+}
+
 
 async function run() {
     if (typeof window.ethereum !== 'undefined') {
@@ -65,6 +73,7 @@ async function initialise(CONTRACTADDR, accounts) {
         });
     console.log("Contract in conf", CONTRACT)
     setConvVariables();
+    showAccountAddr();
 }
 
 
