@@ -54,7 +54,8 @@ contract Pack{
     }
 
     /**
-    @notice Inform of the value of a pack
+    @notice Retrieve the value of a pack
+    @dev Used to lock the appropriate amount of money from the traveller
     @param _boxID ID that refers to the shipping
     @return _boxValue Value of the pack of the shipping
     */
