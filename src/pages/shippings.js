@@ -31,10 +31,10 @@ function getUserBox() {
                                     <div class="card-body">\
                                     <h2  class="card-title"><b>Shipping id: '+ result[i][0] + '</b><h2>\
                                         <p class="card-text" >\
-                                            <img src="../assets/icons/sender_icon.svg" width="5%"height="5%"> '+ result[i][2] + '<br>\
-                                            <img src="../assets/icons/receiver_icon.svg" width="5%"height="5%"> '+ result[i][3] + '<br>\
-                                            <img src="../assets/icons/shipping_icon.svg" width="5%"height="5%">'+ convertedShippingCost + '<br>\
-                                            <img src="../assets/icons/package_icon.svg" width="5%"height="5%">'+ convertedBoxValue + '\
+                                            <img src="../assets/icons/sender_icon.svg" width="5%"height="5%"> <b>traveller: </b>'+ result[i][2] + '<br>\
+                                            <img src="../assets/icons/receiver_icon.svg" width="5%"height="5%"> <b>receiver: </b>'+ result[i][3] + '<br>\
+                                            <img src="../assets/icons/shipping_icon.svg" width="5%"height="5%"> <b>shipping cost: </b>'+ convertedShippingCost + ' €<br>\
+                                            <img src="../assets/icons/package_icon.svg" width="5%"height="5%"> <b>box value:  </b>'+ convertedBoxValue + ' €\
                                         </p>\
                                         </div>\
                                     </div>';
