@@ -22,12 +22,12 @@ async function giveBox() {
   let shippingCostEUR = $('#shipCost').val(); //val in euro
   let boxValueEUR = $('#boxValue').val();
   //Controllo che gli address forniti in input siano diversi
-  if (userAddress == receiverAddr || userAddress == travellerAddr) {
+  if (userAddress.toLowerCase() == receiverAddr.toLowerCase() || userAddress.toLowerCase() == travellerAddr.toLowerCase()) {
     alert("You can not be involved as traveller or receiver!");
     return;
   }
 
-  if (travellerAddr == receiverAddr) {
+  if (travellerAddr.toLowerCase() == receiverAddr.toLowerCase()) {
     alert("The two addresses must be different!");
     return;
   }
