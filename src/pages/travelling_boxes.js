@@ -5,17 +5,17 @@ $(window).on('load', function () {
     start();
 });
 
-function start(){
+function start() {
     run()
-    setTimeout(function(){
+    setTimeout(function () {
         userAddress = exportUserAddr();
         contract = exportContract();
         getUserBox();
-    }, 500 );
+    }, 500);
 }
 
 async function getUserBox() {
-     var res = contract.methods.getTravellerBoxes(userAddress.toString()).call((err, result) => {
+    var res = contract.methods.getTravellerBoxes(userAddress.toString()).call((err, result) => {
         var shippingCard = ''
         if (result && typeof result === 'object') {
             if (Object.values(result).length == 0) {
@@ -27,13 +27,13 @@ async function getUserBox() {
                     shippingCard += '<div class="card border-ligth mx-auto mb-3" style="max-width: 70%; text-alig: center">\
                                     <div class="card-body">\
                                     <h2  class="card-title"><b>Shipping id: '+ result[i][0] + '</b><h2>\
-                                        <p class="card-text" >\
-                                            <img src="../assets/icons/sender_icon.svg" width="5%"height="5%"> '+ result[i][1] + '<br>\
-                                            <img src="../assets/icons/receiver_icon.svg" width="5%"height="5%"> '+ result[i][3] + '<br>\
-                                            <img src="../assets/icons/shipping_icon.svg" width="5%"height="5%">'+ convertedShippingCost + '<br>\
-                                            <img src="../assets/icons/package_icon.svg" width="5%"height="5%">'+ convertedBoxValue + '\
-                                        </p>\
-                                        </div>\
+                                    <p class="card-text" >\
+                                        <img src="../assets/icons/sender_icon.svg" width="5%"height="5%"> <b>sender: </b>'+ result[i][1] + '<br>\
+                                        <img src="../assets/icons/receiver_icon.svg" width="5%"height="5%"> <b>receiver: </b>'+ result[i][3] + '<br>\
+                                        <img src="../assets/icons/shipping_icon.svg" width="5%"height="5%"> <b>shipping cost: </b>'+ convertedShippingCost + ' €<br>\
+                                        <img src="../assets/icons/package_icon.svg" width="5%"height="5%"> <b>box value:  </b>'+ convertedBoxValue + ' €\
+                                    </p>\
+                                    </div>\
                                     </div>';
                 }
             }
