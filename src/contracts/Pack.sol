@@ -18,11 +18,6 @@ contract Pack{
         uint256 boxValue;
     }
 
-    /// @notice Contract deployment
-    constructor()  {
-        minter = payable(msg.sender);         // saving the minter address
-    }
-
     /// @notice Counter that acts as a unique identifier for each shipping
     uint256 currentBoxID;
     /// @notice Array that stores each shipping of a user as a sender
@@ -31,8 +26,6 @@ contract Pack{
     mapping(address => Box[]) public travelMap;
     /// @notice Array that stores all the shippings in process
     mapping (uint256 => Box) public boxes;    
-    /// @notice Address of the minter for the withdraw
-    address payable minter;
 
     /**
     @notice Creation of the non-fungible token that works as a receipt
