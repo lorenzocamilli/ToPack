@@ -59,6 +59,7 @@ contract Pack{
     @param _boxID ID that refers to the shipping
     @return _boxValue Value of the pack of the shipping
     */
+
     function getBoxValue(
         uint256 _boxID
         ) public view returns (uint256 _boxValue){
@@ -74,7 +75,8 @@ contract Pack{
     @param _senderAddr Address of the user
     @return se Shippings as a sender
      */
-    function getSenderBoxes(address _senderAddr)  public view returns (Box[] memory se){
+
+    function getSenderBoxes(address _senderAddr)  public view returns (Box[] memory ){
         // get the list of posts created by the msg.sender
         return  sentMap[_senderAddr];
     }
@@ -84,7 +86,8 @@ contract Pack{
     @param _travellerAddr Address of the user
     @return tr Shippings as a traveller
      */
-    function getTravellerBoxes(address _travellerAddr)  public view returns (Box[] memory tr){
+
+    function getTravellerBoxes(address _travellerAddr)  public view returns (Box[] memory){
         // get the list of posts created by the msg.sender
         return  travelMap[_travellerAddr];
     }
@@ -93,7 +96,10 @@ contract Pack{
     @notice Unlock the money that has been sent to the contract and pay the traveller
     @param _boxID ID that refers to the shipping
     */
+
     function boxReceived(uint _boxID) public{
+        address sender;
+        address traveller;
         // only the receiver can call this function to pay the traveller
         for (uint256 i = 0; i < boxes.length; i++) {
             if (boxes[i].boxID==_boxID){
@@ -103,66 +109,90 @@ contract Pack{
                   // paying the traveller from the smart contract, giving him back the boxValue too
       
                   // temporary aliases for the addresses
-                    address sender = boxes[_boxID].senderAddr;
-                    address traveller = boxes[_boxID].travellerAddr;  
-
+                    sender = boxes[_boxID].senderAddr;
+                    traveller = boxes[_boxID].travellerAddr;  
                     // burn the nfts   
-                    burn(sender,traveller, _boxID);
-            
+                     break;
                 }
+
             }
         }   
-         }
+        burn2(sentMap[sender], _boxID);
+        burn2(travelMap[traveller], _boxID);
+        burn2(boxes, _boxID);
+    }
 
-    /**
-    @notice Burn the non-fungible tokens created for this pack
-    @param sender Address of the sender
-    @param traveller Address of the traveller
-    @param _boxID ID that refers to the shipping
-    */
-    function burn(address sender, address traveller, uint256 _boxID ) private {
+
+
+
+
+    function burn2(Box[] storage boxesArray, uint _boxID ) private{   
+        if (boxesArray.length != 1  && _boxID == (boxesArray[(boxesArray.length) - 1].boxID)) {
+            boxesArray.pop();
+        }else if (boxesArray.length == 1 && _boxID == boxesArray[0].boxID){            // if _boxID is the ID of the first (and the only) box in the array
+            boxesArray.pop();
+        } else if (boxesArray.length != 1){
+            for (uint i = 0; i < boxesArray.length; i++) {
+                if ( boxesArray[i].boxID==_boxID){
+                    boxesArray[i] = boxesArray[boxesArray.length - 1];
+                    boxesArray.pop();
+                    break;
+                }
+        }
+        }
+    }
+    
+
+    /// @notice Money has been received by the contract
+    event Received(address, uint);
+
+    /// @notice Receive function used to receive ether
+    receive() external payable {
+        emit Received(msg.sender, msg.value);
+    }
+}
+
+
+
+ /*   function burn(address sender, uint256 _boxID, Box[]  ) private {
         // delete the box from the sender array
         // if the _boxID is the ID of the last item in the map, just pop it
        
         for (uint256 i = 0; i < (sentMap[sender]).length; i++) {
-            if (sender == boxes[i].senderAddr) {
-                if (_boxID == (sentMap[sender][(sentMap[sender]).length - 1].boxID)) {
+            if (_boxID == (sentMap[sender][(sentMap[sender]).length - 1].boxID)) {
+                sentMap[sender].pop();
+                break;
+            } else if ((sentMap[sender]).length == 1 && _boxID == sentMap[sender][0].boxID){            // if _boxID is the ID of the first (and the only) box in the array
+                sentMap[sender].pop();
+                break;
+            } else if ((sentMap[sender]).length != 1) {
+            // move the element as last element of the array and then delete it
+                if (_boxID == sentMap[sender][i].boxID) {
+                    sentMap[sender][i] = sentMap[sender][
+                        (sentMap[sender]).length - 1
+                    ];
                     sentMap[sender].pop();
                     break;
-                } else if ((sentMap[sender]).length == 1 && _boxID == sentMap[sender][0].boxID){            // if _boxID is the ID of the first (and the only) box in the array
-                    sentMap[sender].pop();
-                    break;
-                } else if ((sentMap[sender]).length != 1) {
-                // move the element as last element of the array and then delete it
-                    if (_boxID == sentMap[sender][i].boxID) {
-                        sentMap[sender][i] = sentMap[sender][
-                            (sentMap[sender]).length - 1
-                        ];
-                        sentMap[sender].pop();
-                        break;
-                    }
                 }
             }
         }
        for (uint256 i = 0; i < (travelMap[traveller]).length; i++) {
-            if (traveller == boxes[i].travellerAddr) {
-                if (_boxID == (travelMap[traveller][(travelMap[traveller]).length - 1].boxID)) {
+            if (_boxID == (travelMap[traveller][(travelMap[traveller]).length - 1].boxID)) {
+                travelMap[traveller].pop();
+                break;
+            } else if ((travelMap[traveller]).length == 1 && _boxID == travelMap[traveller][0].boxID){            // if _boxID is the ID of the first (and the only) box in the array
+                travelMap[traveller].pop();
+                break;
+            } else if ((travelMap[traveller]).length != 1) {
+            // move the element as last element of the array and then delete it
+                if (_boxID == travelMap[traveller][i].boxID) {
+                    travelMap[traveller][i] = travelMap[traveller][
+                        (travelMap[traveller]).length - 1
+                    ];
                     travelMap[traveller].pop();
                     break;
-                } else if ((travelMap[traveller]).length == 1 && _boxID == travelMap[traveller][0].boxID){            // if _boxID is the ID of the first (and the only) box in the array
-                    travelMap[traveller].pop();
-                    break;
-                } else if ((travelMap[traveller]).length != 1) {
-                // move the element as last element of the array and then delete it
-                    if (_boxID == travelMap[traveller][i].boxID) {
-                        travelMap[traveller][i] = travelMap[traveller][
-                            (travelMap[traveller]).length - 1
-                        ];
-                        travelMap[traveller].pop();
-                        break;
-                    }
                 }
-            }
+            }     
         }
         for (uint256 i = 0; i < boxes.length; i++) {
             if (_boxID == (boxes[boxes.length - 1].boxID)) {
@@ -180,13 +210,4 @@ contract Pack{
             }
         }
     }
-
-
-    /// @notice Money has been received by the contract
-    event Received(address, uint);
-
-    /// @notice Receive function used to receive ether
-    receive() external payable {
-        emit Received(msg.sender, msg.value);
-    }
-}
+    */
