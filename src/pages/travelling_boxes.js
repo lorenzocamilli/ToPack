@@ -1,35 +1,17 @@
-run();
 var userAddress;
 var contract;
-var response;
-var data;
-var eurRate;
 
 $(window).on('load', function () {
-    first();
+    start();
 });
-function first(){
+
+function start(){
     run()
     setTimeout(function(){
         userAddress = exportUserAddr();
         contract = exportContract();
-        setConvVariables();
+        getUserBox();
     }, 500 );
-}
-async function upload() {
-
-    console.log("User addres", userAddress)
-    console.log("Contract", contract)
-    getUserBox()
-
-}
-
-async function setConvVariables() {
-    response = await fetch('https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=BTC,USD,EUR');
-    data = await response.json();
-    eurRate = data.EUR;
-    upload();
-
 }
 
 async function getUserBox() {
@@ -58,11 +40,4 @@ async function getUserBox() {
             $('#cards').append(shippingCard);
         }
     })
-}
-
-
-function convertWeiToEuro(weiAmount) {
-    const euroAmount = weiAmount * eurRate / 10 ** 18;
-    console.log(`${weiAmount} weis is equal to ${euroAmount} euro.`);
-    return euroAmount;
 }

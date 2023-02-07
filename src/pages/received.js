@@ -1,21 +1,20 @@
-$("form").submit(function (e) { e.preventDefault(); });
-run();
 var userAddress;
 var contract;
-var response;
-var data;
-var eurRate;
+var contractAddress;
 
 $(window).on('load', function () {
-  upload();
+  start()
 });
 
-async function upload() {
-  userAddress = exportUserAddr();
-  contract = exportContract();
-  console.log("User addres", userAddress)
-  console.log("Contract", contract)
+function start() {
+  run()
+  setTimeout(function () {
+    userAddress = exportUserAddr();
+    contractAddress = exportContractAddr();
+    contract = exportContract();
+  }, 500);
 }
+
 
 async function endBox() {
   console.log("Function correctly called");

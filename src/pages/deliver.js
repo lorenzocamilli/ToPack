@@ -1,21 +1,20 @@
-$("form").submit(function (e) { e.preventDefault(); });
-run();
 var userAddress;
 var contract;
-var response;
-var data;
-var eurRate;
+var contractAddress;
 
 $(window).on('load', function () {
-  upload();
+  start();
 });
 
-async function upload() {
-  userAddress = exportUserAddr();
-  contract = exportContract();
-  console.log("User addres", userAddress)
-  console.log("Contract", contract)
+function start() {
+  run()
+  setTimeout(function () {
+    userAddress = exportUserAddr();
+    contractAddress = exportContractAddr();
+    contract = exportContract();
+  }, 500);
 }
+
 
 async function deliverBox() {
   console.log("Function correctly called");
@@ -29,17 +28,16 @@ async function deliverBox() {
     console.log("Box value: " + boxValue);
     lockMoney(boxValue);
   })
-
 }
 
-async function lockMoney(boxValue){
-  web3.eth.sendTransaction({ 
+async function lockMoney(boxValue) {
+  web3.eth.sendTransaction({
     from: userAddress,
-    to: contractAddress, 
-    value: boxValue 
-  }, function(err, transactionHash) {
-      if (!err)
-        console.log(transactionHash + " success: box value locked."); 
-    }
-  );  
+    to: contractAddress,
+    value: boxValue
+  }, function (err, transactionHash) {
+    if (!err)
+      console.log(transactionHash + " success: box value locked.");
+  }
+  );
 }

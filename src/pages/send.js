@@ -1,34 +1,19 @@
-run();
-
-var userAddress 
-var contract 
+var userAddress
+var contract
 var contractAddress
-var response;
-var data;
-var eurRate;
 
 $(window).on('load', function () {
-  setConvVariables();
+  start();
 });
 
-
-async function setConvVariables() {
-  response = await fetch('https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=BTC,USD,EUR');
-  data = await response.json();
-  eurRate = data.EUR;
+function start() {
+  run()
+  setTimeout(function () {
+    userAddress = exportUserAddr();
+    contractAddress = exportContractAddr();
+    contract = exportContract();
+  }, 500);
 }
-
-
-async function upload() {
-  userAddress = await exportUserAddr();
-  contract = await exportContract();
-  contractAddress=await exportContractAddr();
-  console.log("User addres", userAddress)
-  console.log("Contract", contract)
-  console.log("Contract addres", contractAddress)
-  _callback();    
-}
-
 
 async function giveBox() {
   console.log("Function correctly called");
@@ -92,19 +77,3 @@ async function giveBox() {
   })
 }
 
-
-
-
-function convertEurosToWei(euros) {
-  const ether = euros / eurRate;
-  const wei = ether * 10 ** 18;
-  console.log(`${euros} euros is equal to ${wei} wei.`);
-  return wei;
-}
-
-
-function convertWeiToEuro(weiAmount) {
-  const euroAmount = weiAmount * eurRate / 10 ** 18;
-  console.log(`${weiAmount} weis is equal to ${euroAmount} euro.`);
-  return euroAmount;
-}

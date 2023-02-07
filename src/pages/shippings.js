@@ -1,49 +1,29 @@
 var userAddress;
 var contract;
-var response;
-var data;
-var eurRate;
 
 $(window).on('load', function () {
-    first()
+    start()
 });
-function first(){
+
+function start(){
     run()
     setTimeout(function(){
-        setConvVariables();
+        userAddress = exportUserAddr();
+        contract = exportContract();
+        getUserBox();
     }, 500 );
 }
-async function setConvVariables() {
-    response = await fetch('https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=BTC,USD,EUR');
-    data = await response.json();
-    eurRate = data.EUR;
-    upload()
-}
 
-function upload() {
-    userAddress =  USERADDR;
-    contract = CONTRACT;
-    console.log("User addres", userAddress)
-    console.log("Contract", contract)
-    getUserBox()
-}
-
-
-function getUserBox() {
-
-    
+function getUserBox() {   
     var res = contract.methods.getUserBox(userAddress.toString()).call({
         from: userAddress, gasLimit: 3000000
     }).then(function (result) {
-        console.log("chiamata blockchian")
-        console.log("Res", res)
         console.log("Result", result)
         var shippingCard = ''
         if (result && typeof result === 'object') {
             if (Object.values(result).length == 0) {
                 shippingCard = '<h1 style="text-align:center;"> You don\'t have any boxes yet </h1>'
             } else {
-
                 for (let i = 0; i < Object.values(result).length; i++) {
                     convertedShippingCost = convertWeiToEuro(result[i][4]).toFixed(2);
                     convertedBoxValue = convertWeiToEuro(result[i][5]).toFixed(2);
@@ -62,13 +42,5 @@ function getUserBox() {
             }
         }
         $('#cards').append(shippingCard);
-
     })
-}
-
-
-function convertWeiToEuro(weiAmount) {
-    const euroAmount = weiAmount * eurRate / 10 ** 18;
-    console.log(`${weiAmount} weis is equal to ${euroAmount} euro.`);
-    return euroAmount;
 }
