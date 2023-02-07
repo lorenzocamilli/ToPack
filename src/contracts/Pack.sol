@@ -18,16 +18,30 @@ contract Pack{
         uint256 boxValue;
     }
 
+    /// @notice Contract deployment
     constructor()  {
         minter = payable(msg.sender);         // saving the minter address
     }
 
+    /// @notice Counter that acts as a unique identifier for each shipping
     uint256 currentBoxID;
-    mapping(address => Box[]) public sentMap; // each user has associated the ID of all the box sent
-    mapping(address => Box[]) public travelMap; // each user has associated the ID of all the box sent
-    mapping (uint256 => Box) public boxes;    // map of all posts
-    address payable minter;                   // minter addr for the withdraw
+    /// @notice Array that stores each shipping of a user as a sender
+    mapping(address => Box[]) public sentMap;
+    /// @notice Array that stores each shipping of a user as a traveller
+    mapping(address => Box[]) public travelMap;
+    /// @notice Array that stores all the shippings in process
+    mapping (uint256 => Box) public boxes;    
+    /// @notice Address of the minter for the withdraw
+    address payable minter;
 
+    /**
+    @notice Creation of the non-fungible token that works as a receipt
+    @param _senderAddr Address of the sender
+    @param _travellerAddr Address of the traveller
+    @param _receiverAddr Address of the receiver
+    @param _shippingCost Shipment cost
+    @param _boxValue Pack value
+     */
     function assignBox(
         address _senderAddr,
         address _travellerAddr,
@@ -35,22 +49,22 @@ contract Pack{
         uint256 _shippingCost,
         uint256 _boxValue
     ) public {
-        // CHECKS DONE IN WEB3
-        
-        //give the box to the traveller: block money trasferring them to the contract, add the box to each user
+        // Temporary box created
         Box memory newBox = Box({boxID: currentBoxID, senderAddr: _senderAddr, 
             travellerAddr: _travellerAddr, receiverAddr: _receiverAddr, shippingCost: _shippingCost, boxValue: _boxValue});
+        // Push of the shipping inside the respective mappings
         sentMap[_senderAddr].push(newBox);
         travelMap[_travellerAddr].push(newBox);
         boxes[currentBoxID] = newBox;
-        currentBoxID = currentBoxID +1;    
+        // currentBoxID increased for the next shipping
+        currentBoxID = currentBoxID +1;
     }
 
     /**
     @notice Inform of the value of a pack
     @param _boxID ID that refers to the shipping
     @return _boxValue Value of the pack of the shipping
-     */
+    */
     function deliverBox(
         uint256 _boxID
         ) public view returns (uint256 _boxValue){
@@ -58,18 +72,21 @@ contract Pack{
     }
 
     /**
-    @notice List all the shippings assigned to a specific user
-    @param _userAddr Address of the user
+    @notice List all the shippings assigned to the sender
+    @param _senderAddr Address of the user
     @return se Shippings as a sender
-    @return tr Shippings as a traveller
-    @return re Shippings as a receiver
      */
-    function getUserBox(address _senderAddr)  public view returns (Box[] memory ){
+    function getUserBox(address _senderAddr)  public view returns (Box[] memory se){
         // get the list of posts created by the msg.sender
         return  sentMap[_senderAddr];
     }
     
-    function getTravellerBoxes(address _travellerAddr)  public view returns (Box[] memory ){
+    /**
+    @notice List all the shippings assigned to the traveller
+    @param _travellerAddr Address of the user
+    @return tr Shippings as a traveller
+     */
+    function getTravellerBoxes(address _travellerAddr)  public view returns (Box[] memory tr){
         // get the list of posts created by the msg.sender
         return  travelMap[_travellerAddr];
     }
@@ -79,8 +96,6 @@ contract Pack{
     @param _boxID ID that refers to the shipping
     */
     function boxDelivered(uint _boxID) public{
-        // pack has been delivered -> pay the traveller
-
         // only the receiver can call this function to pay the traveller
         require(msg.sender == boxes[_boxID].receiverAddr);
 
@@ -88,15 +103,18 @@ contract Pack{
         payable(boxes[_boxID].travellerAddr).transfer(boxes[_boxID].shippingCost);  //  paying for the shipping
         payable(boxes[_boxID].travellerAddr).transfer(boxes[_boxID].boxValue);      //  giving back the box value
 
-        // changing the post state to delivered
-        // changing the post state to delivered
+        // temporary aliases for the addresses
         address sender = boxes[_boxID].senderAddr;
-        address traveller = boxes[_boxID].travellerAddr;      
+        address traveller = boxes[_boxID].travellerAddr;  
+
+        // burn the nfts   
         burn(sender,traveller, _boxID);
     }
 
     /**
     @notice Burn the non-fungible tokens created for this pack
+    @param sender Address of the sender
+    @param traveller Address of the traveller
     @param _boxID ID that refers to the shipping
     */
     function burn(address sender, address traveller, uint256 _boxID) private {
@@ -147,18 +165,14 @@ contract Pack{
                 }
             }
         }
-        // delete the element form the map of the boxes
-        for (uint i = 0; i < currentBoxID; i ++){
-            if(_boxID==boxes[i].boxID){
-                delete boxes[i];
-                break;
-            }
-        }
+        // delete the element from the map of the boxes
+        delete boxes[_boxID];
     }
 
-   
+    /// @notice Money has been received by the contract
     event Received(address, uint);
 
+    /// @notice Receive function used to receive ether
     receive() external payable {
         emit Received(msg.sender, msg.value);
     }
