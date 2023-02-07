@@ -17,7 +17,7 @@ Any step is guaranteed by the blockchain.
 1. Open ganache
 2. Compile the contracts using `truffle compile`
 3. Deploy the contracts using `truffle deploy`
-4. Change the contract address in `scripts/index.js` with the one in ganache
+4. Change the contract address in `pages/config.js` with the one in ganache
 5. Create a local server with ` http-server http://localhost:8080` or any alternative such as python
 
 
