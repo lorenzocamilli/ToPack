@@ -67,7 +67,7 @@ async function giveBox() {
   }
   );
 
-  contract.methods.assignBox(userAddress, travellerAddr, receiverAddr, shippingCostWEI.toString(), boxValueWEI.toString()).send({
+  contract.methods.createBox(userAddress, travellerAddr, receiverAddr, shippingCostWEI.toString(), boxValueWEI.toString()).send({
     from: userAddress, to: contractAddress, gasLimit: 3000000
   }).then(function (result) {
     console.log("Box in shipment - Transaction: ");
