@@ -63,21 +63,24 @@ async function giveBox() {
     value: shippingCostWEI
   }, function (err, transactionHash) {
     if (!err)
+    {
       console.log(transactionHash + " success: shipping cost locked.");
-  }
-  );
 
-  contract.methods.createBox(userAddress, travellerAddr, receiverAddr, shippingCostWEI.toString(), boxValueWEI.toString()).send({
-    from: userAddress, to: contractAddress, gasLimit: 3000000
-  }).then(function (result) {
-    console.log("Box in shipment - Transaction: ");
-    console.log("Sender: " + userAddress);
-    console.log("Traveller: " + travellerAddr);
-    console.log("Receiver: " + receiverAddr)
-    console.log("Shipping cost: " + shippingCostWEI + " WEI");
-    console.log("(" + shippingCostEUR + " EUR)");
-    console.log("Box value: " + boxValueWEI + " WEI");
-    console.log("(" + boxValueEUR + " EUR)");
-  })
+      // if success, then we can create the nft
+      contract.methods.createBox(userAddress, travellerAddr, receiverAddr, shippingCostWEI.toString(), boxValueWEI.toString()).send({
+        from: userAddress, to: contractAddress, gasLimit: 3000000
+      }).then(function (result) {
+        console.log("Box in shipment - Transaction: ");
+        console.log("Sender: " + userAddress);
+        console.log("Traveller: " + travellerAddr);
+        console.log("Receiver: " + receiverAddr)
+        console.log("Shipping cost: " + shippingCostWEI + " WEI");
+        console.log("(" + shippingCostEUR + " EUR)");
+        console.log("Box value: " + boxValueWEI + " WEI");
+        console.log("(" + boxValueEUR + " EUR)");
+      })
+    }
+  });
+
 }
 

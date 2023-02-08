@@ -101,7 +101,7 @@ contract Pack{
         address sender = boxes[_boxID].senderAddr;
         address traveller = boxes[_boxID].travellerAddr;  
 
-        // burnToken the nfts   
+        // burn the nfts   
         burnToken(sender,traveller, _boxID);
     }
 
