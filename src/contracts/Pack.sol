@@ -63,11 +63,14 @@ contract Pack{
     function getBoxValue(
         uint256 _boxID
         ) public view returns (uint256 _boxValue){
-            for (uint256 i = 0; i < boxes.length; i++) {
+            uint value;
+            for (uint256 i = 0; i < (boxes.length)-1; i++) {
                 if (boxes[i].boxID==_boxID){
-                    return boxes[_boxID].boxValue;
+                    value= boxes[i].boxValue;
+                    break;
                 }
             }
+        return value;
     }
 
     /**
@@ -112,7 +115,8 @@ contract Pack{
                     sender = boxes[_boxID].senderAddr;
                     traveller = boxes[_boxID].travellerAddr;  
                     // burn the nfts   
-                     break;
+                   
+                    break;
                 }
 
             }
@@ -138,7 +142,7 @@ contract Pack{
                     boxesArray.pop();
                     break;
                 }
-        }
+            }
         }
     }
     
