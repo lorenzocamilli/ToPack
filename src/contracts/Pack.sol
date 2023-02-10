@@ -100,50 +100,89 @@ contract Pack{
     @param _boxID ID that refers to the shipping
     */
 
-    function boxReceived(uint _boxID) public{
-        address sender;
-        address traveller;
+    function setBoxReceived(uint _boxID) public{
         // only the receiver can call this function to pay the traveller
-        for (uint256 i = 0; i < boxes.length; i++) {
-            if (boxes[i].boxID==_boxID){
-                if (msg.sender == boxes[i].receiverAddr){
-                    payable(boxes[_boxID].travellerAddr).transfer(boxes[_boxID].shippingCost);  //  paying for the shipping
-                    payable(boxes[_boxID].travellerAddr).transfer(boxes[_boxID].boxValue);      //  giving back the box value
-                  // paying the traveller from the smart contract, giving him back the boxValue too
-      
-                  // temporary aliases for the addresses
-                    sender = boxes[_boxID].senderAddr;
-                    traveller = boxes[_boxID].travellerAddr;  
-                    // burn the nfts   
-                   
-                    break;
-                }
+        require(msg.sender == boxes[_boxID].receiverAddr);
 
-            }
-        }   
-        burn2(sentMap[sender], _boxID);
-        burn2(travelMap[traveller], _boxID);
-        burn2(boxes, _boxID);
+        // paying the traveller from the smart contract, giving him back the boxValue too
+        payable(boxes[_boxID].travellerAddr).transfer(boxes[_boxID].shippingCost);  //  paying for the shipping
+        payable(boxes[_boxID].travellerAddr).transfer(boxes[_boxID].boxValue);      //  giving back the box value
+
+        // temporary aliases for the addresses
+        address sender = boxes[_boxID].senderAddr;
+        address traveller = boxes[_boxID].travellerAddr;  
+
+        // burn the nfts   
+        burnToken(sender,traveller, _boxID);
     }
 
 
-
-
-
-    function burn2(Box[] storage boxesArray, uint _boxID ) private{   
-        if (boxesArray.length != 1  && _boxID == (boxesArray[(boxesArray.length) - 1].boxID)) {
-            boxesArray.pop();
-        }else if (boxesArray.length == 1 && _boxID == boxesArray[0].boxID){            // if _boxID is the ID of the first (and the only) box in the array
-            boxesArray.pop();
-        } else if (boxesArray.length != 1){
-            for (uint i = 0; i < boxesArray.length; i++) {
-                if ( boxesArray[i].boxID==_boxID){
-                    boxesArray[i] = boxesArray[boxesArray.length - 1];
-                    boxesArray.pop();
-                    break;
+    function burnToken(address sender, address traveller, uint256 _boxID) private {
+        // delete the box from the sender array
+        // if the _boxID is the ID of the last item in the map, just pop it
+        if (sender == boxes[_boxID].senderAddr) {
+            if (_boxID == (senderMap[sender][(senderMap[sender]).length - 1].boxID)) {
+                senderMap[sender].pop();
+            }
+            // if _boxID is the ID of the first (and the only) box in the array
+            else if (
+                (senderMap[sender]).length == 1 && _boxID == senderMap[sender][0].boxID
+            ) {
+                senderMap[sender].pop();
+            } else if ((senderMap[sender]).length != 1) {
+                // move the element as last element of the array and then delete it
+                for (uint256 i = 0; i < (senderMap[sender]).length; i++) {
+                    if (_boxID == senderMap[sender][i].boxID) {
+                        senderMap[sender][i] = senderMap[sender][
+                            (senderMap[sender]).length - 1
+                        ];
+                        senderMap[sender].pop();
+                        break;
+                    }
                 }
             }
         }
+        // delete the box from the travelelr map
+        if (traveller == boxes[_boxID].travellerAddr) {
+            if (
+                _boxID == (travellerMap[traveller][(travellerMap[traveller]).length - 1].boxID)
+            ) {
+                travellerMap[traveller].pop();
+            } else if (
+                (travellerMap[traveller]).length == 1 &&
+                _boxID == travellerMap[traveller][0].boxID
+            ) {
+                travellerMap[traveller].pop();
+            } else if ((travellerMap[traveller]).length != 1) {
+                for (uint256 i = 0; i < (travellerMap[traveller]).length; i++) {
+                    if (_boxID == travellerMap[traveller][i].boxID) {
+                        travellerMap[traveller][i] = travellerMap[traveller][
+                            (travellerMap[traveller]).length - 1
+                        ];
+                        travellerMap[traveller].pop();
+                        break;
+                    }
+                }
+            }
+        }
+        if (_boxID == boxes[boxes.length - 1].boxID) {
+            boxes.pop();
+        } else if (boxes.length == 1 && _boxID == boxes[0].boxID
+        ) {
+            boxes.pop();
+        } else {
+        for (uint256 i = 0; i < boxes.length-1; i++) {
+            if (_boxID == boxes[i].boxID) {
+                boxes[i] = boxes[
+                    boxes.length - 1
+                ];
+                boxes.pop();
+                break;
+            }
+        }
+    }
+    }
+        // delete the element from the map of the boxes
     }
     
 
