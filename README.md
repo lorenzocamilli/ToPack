@@ -11,7 +11,7 @@ Any step is guaranteed by the blockchain.
 - [NodeJS](https://trufflesuite.com/ganache/) and the required libraries. To install the libraries run `npm install` in  `src/` directory 
 - [Ganache](https://trufflesuite.com/ganache/)
 - [Truffle](https://trufflesuite.com/)  
-- [Metmask](https://metamask.io/download/) extension
+- [Metamask](https://metamask.io/download/) extension
 
 ## Run the project
 1. Open Ganache.
