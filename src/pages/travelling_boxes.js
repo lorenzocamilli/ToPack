@@ -15,7 +15,9 @@ function start() {
 }
 
 async function getUserBox() {
-    var res = contract.methods.getTravellerBoxes(userAddress.toString()).call((err, result) => {
+    getSenderBoxes
+    var res = contract.methods.getTravellerBoxes(userAddress.toString()).call({
+        from: userAddress}).then(function (result) {
         var shippingCard = ''
         if (result && typeof result === 'object') {
             if (Object.values(result).length == 0) {

@@ -16,8 +16,7 @@ function start(){
 
 function getUserBox() {   
     var res = contract.methods.getSenderBoxes(userAddress.toString()).call({
-        from: userAddress, gasLimit: 3000000
-    }).then(function (result) {
+        from: userAddress}).then(function (result) {
         console.log("Result", result)
         var shippingCard = ''
         if (result && typeof result === 'object') {

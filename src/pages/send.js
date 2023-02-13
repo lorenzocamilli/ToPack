@@ -68,8 +68,7 @@ async function giveBox() {
 
       // if success, then we can create the nft
       contract.methods.createBox(userAddress, travellerAddr, receiverAddr, shippingCostWEI.toString(), boxValueWEI.toString()).send({
-        from: userAddress, to: contractAddress, gasLimit: 3000000
-      }).then(function (result) {
+        from: userAddress, to: contractAddress}).then(function (result) {
         console.log("Box in shipment - Transaction: ");
         console.log("Sender: " + userAddress);
         console.log("Traveller: " + travellerAddr);
