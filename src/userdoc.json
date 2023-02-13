@@ -1,0 +1,49 @@
+
+======= contracts/Pack.sol:Pack =======
+User Documentation
+{
+  "events":
+  {
+    "Received(address,uint256)":
+    {
+      "notice": "Money has been received by the contract"
+    }
+  },
+  "kind": "user",
+  "methods":
+  {
+    "boxes(uint256)":
+    {
+      "notice": "Array that stores all the shippings in process"
+    },
+    "createBox(address,address,address,uint256,uint256)":
+    {
+      "notice": "Creation of the non-fungible token that works as a receipt"
+    },
+    "getBoxValue(uint256)":
+    {
+      "notice": "Retrieve the value of a pack"
+    },
+    "getSenderBoxes(address)":
+    {
+      "notice": "List all the shippings assigned to the sender"
+    },
+    "getTravellerBoxes(address)":
+    {
+      "notice": "List all the shippings assigned to the traveller"
+    },
+    "senderMap(address,uint256)":
+    {
+      "notice": "Array that stores each shipping of a user as a sender"
+    },
+    "setBoxReceived(uint256)":
+    {
+      "notice": "Unlock the money that has been sent to the contract and pay the traveller"
+    },
+    "travellerMap(address,uint256)":
+    {
+      "notice": "Array that stores each shipping of a user as a traveller"
+    }
+  },
+  "version": 1
+}

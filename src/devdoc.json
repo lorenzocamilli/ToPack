@@ -1,0 +1,64 @@
+
+======= contracts/Pack.sol:Pack =======
+Developer Documentation
+{
+  "details": "Makes sure the payment takes place once the pack has been delivered",
+  "kind": "dev",
+  "methods":
+  {
+    "createBox(address,address,address,uint256,uint256)":
+    {
+      "params":
+      {
+        "_boxValue": "Pack value",
+        "_receiverAddr": "Address of the receiver",
+        "_senderAddr": "Address of the sender",
+        "_shippingCost": "Shipment cost",
+        "_travellerAddr": "Address of the traveller"
+      }
+    },
+    "getBoxValue(uint256)":
+    {
+      "details": "Used to lock the appropriate amount of money from the traveller",
+      "params":
+      {
+        "_boxID": "ID that refers to the shipping"
+      },
+      "returns":
+      {
+        "_boxValue": "Value of the pack of the shipping"
+      }
+    },
+    "getSenderBoxes(address)":
+    {
+      "params":
+      {
+        "_senderAddr": "Address of the user"
+      },
+      "returns":
+      {
+        "se": "Shippings as a sender"
+      }
+    },
+    "getTravellerBoxes(address)":
+    {
+      "params":
+      {
+        "_travellerAddr": "Address of the user"
+      },
+      "returns":
+      {
+        "tr": "Shippings as a traveller"
+      }
+    },
+    "setBoxReceived(uint256)":
+    {
+      "params":
+      {
+        "_boxID": "ID that refers to the shipping"
+      }
+    }
+  },
+  "title": "ToPack - The new era of private, secure, and fast delivery",
+  "version": 1
+}
