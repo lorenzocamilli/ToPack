@@ -17,7 +17,6 @@ function start(){
 function getUserBox() {   
     var res = contract.methods.getSenderBoxes(userAddress.toString()).call({
         from: userAddress}).then(function (result) {
-        console.log("Result", result)
         var shippingCard = ''
         if (result && typeof result === 'object') {
             if (Object.values(result).length == 0) {

@@ -23,7 +23,8 @@ async function endBox() {
   let boxID = $('#boxID').val();
 
   contract.methods.setBoxReceived(boxID.toString()).send({
-    from: userAddress, to: contractAddress }).then(function (result) {
-    console.log("Box " + boxID + "delivered - Transaction: success");
+    from: userAddress, to: contractAddress
+  }).then(function (result) {
+    console.log("Box  " + boxID + "delivered - Transaction: success");
   })
 }

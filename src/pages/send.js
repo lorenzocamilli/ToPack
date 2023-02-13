@@ -19,9 +19,9 @@ async function giveBox() {
   console.log("Function correctly called");
   var travellerAddr = $('#travellerAddr').val();
   var receiverAddr = $('#receiverAddr').val();
-  let shippingCostEUR = $('#shipCost').val(); //val in euro
-  let boxValueEUR = $('#boxValue').val();
-  //Controllo che gli address forniti in input siano diversi
+  let shippingCostEUR = $('#shipCost').val(); //get the value in euros
+  let boxValueEUR = $('#boxValue').val();  //get the value in euros
+  //Check that the addresses are different
   if (userAddress.toLowerCase() == receiverAddr.toLowerCase() || userAddress.toLowerCase() == travellerAddr.toLowerCase()) {
     alert("You can not be involved as traveller or receiver!");
     return;
@@ -31,7 +31,7 @@ async function giveBox() {
     alert("The two addresses must be different!");
     return;
   }
-  //Controllo lunghezza address
+  //Check the length of the addresses
   if (travellerAddr.length !== 42) {
     alert("Traveller address is not valid!");
     return;
@@ -62,13 +62,13 @@ async function giveBox() {
     to: contractAddress,
     value: shippingCostWEI
   }, function (err, transactionHash) {
-    if (!err)
-    {
+    if (!err) {
       console.log(transactionHash + " success: shipping cost locked.");
 
       // if success, then we can create the nft
       contract.methods.createBox(userAddress, travellerAddr, receiverAddr, shippingCostWEI.toString(), boxValueWEI.toString()).send({
-        from: userAddress, to: contractAddress}).then(function (result) {
+        from: userAddress, to: contractAddress
+      }).then(function (result) {
         console.log("Box in shipment - Transaction: ");
         console.log("Sender: " + userAddress);
         console.log("Traveller: " + travellerAddr);
@@ -80,6 +80,5 @@ async function giveBox() {
       })
     }
   });
-
 }
 

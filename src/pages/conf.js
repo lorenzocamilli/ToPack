@@ -23,7 +23,6 @@ function exportUserAddr() {
 }
 
 function showAccountAddr() {
-console.log("acc", USERADDR)
     $("#userAddress").html(
         USERADDR
     );

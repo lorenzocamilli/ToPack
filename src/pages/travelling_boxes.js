@@ -15,7 +15,6 @@ function start() {
 }
 
 async function getUserBox() {
-    getSenderBoxes
     var res = contract.methods.getTravellerBoxes(userAddress.toString()).call({
         from: userAddress}).then(function (result) {
         var shippingCard = ''
