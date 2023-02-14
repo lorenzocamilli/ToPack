@@ -41,7 +41,7 @@ contract Pack{
         address _receiverAddr,
         uint256 _shippingCost,
         uint256 _boxValue
-    ) public {
+    ) public payable {
         // Temporary box created
         Box memory newBox = Box({boxID: currentBoxID, senderAddr: _senderAddr, 
             travellerAddr: _travellerAddr, receiverAddr: _receiverAddr, shippingCost: _shippingCost, boxValue: _boxValue});

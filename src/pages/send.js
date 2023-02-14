@@ -57,28 +57,17 @@ async function giveBox() {
   }
 
   // here we lock the money from the sender
-  web3.eth.sendTransaction({
-    from: userAddress,
-    to: contractAddress,
-    value: shippingCostWEI
-  }, function (err, transactionHash) {
-    if (!err) {
-      console.log(transactionHash + " success: shipping cost locked.");
-
-      // if success, then we can create the nft
-      contract.methods.createBox(userAddress, travellerAddr, receiverAddr, shippingCostWEI.toString(), boxValueWEI.toString()).send({
-        from: userAddress, to: contractAddress
-      }).then(function (result) {
-        console.log("Box in shipment - Transaction: ");
-        console.log("Sender: " + userAddress);
-        console.log("Traveller: " + travellerAddr);
-        console.log("Receiver: " + receiverAddr)
-        console.log("Shipping cost: " + shippingCostWEI + " WEI");
-        console.log("(" + shippingCostEUR + " EUR)");
-        console.log("Box value: " + boxValueWEI + " WEI");
-        console.log("(" + boxValueEUR + " EUR)");
-      })
-    }
-  });
+  contract.methods.createBox(userAddress, travellerAddr, receiverAddr, shippingCostWEI.toString(), boxValueWEI.toString()).send({
+  from: userAddress, to: contractAddress, value: shippingCostWEI
+  }).then(function (result) {
+    console.log("Box in shipment - Transaction: ");
+    console.log("Sender: " + userAddress);
+    console.log("Traveller: " + travellerAddr);
+    console.log("Receiver: " + receiverAddr)
+    console.log("Shipping cost: " + shippingCostWEI + " WEI");
+    console.log("(" + shippingCostEUR + " EUR)");
+    console.log("Box value: " + boxValueWEI + " WEI");
+    console.log("(" + boxValueEUR + " EUR)");
+  })
 }
 
